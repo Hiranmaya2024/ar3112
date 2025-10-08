@@ -1,42 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aaradhya Pharmaceuticals - Login</title>
-  <link rel="stylesheet" href="styles/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Type Finder</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      color: #333;
+      font-size: 2.5vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      transition: background 0.5s ease;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 700px;
+      padding: 5vh 4vw;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      text-align: center;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1, h2 {
+      font-size: 3vh;
+      margin-bottom: 2vh;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    p {
+      font-size: 2.2vh;
+      margin-bottom: 3vh;
+    }
+
+    button {
+      margin: 1vh;
+      padding: 2vh 4vw;
+      font-size: 2.2vh;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #f8b500;
+      color: white;
+      transition: transform 0.2s ease, background 0.3s;
+      animation: bounceIn 0.5s ease;
+    }
+
+    button:hover {
+      background-color: #e09e00;
+      transform: scale(1.05);
+    }
+
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 2vh;
+    }
+
+    .grid button {
+      width: 12vw;
+      min-width: 60px;
+      margin: 1vh;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .avatar {
+      width: 120px;
+      margin-bottom: 2vh;
+      animation: bounceIn 0.6s ease;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+
+    .grid button:nth-child(1) { background-color: #ff6b6b; }
+    .grid button:nth-child(2) { background-color: #ffb347; }
+    .grid button:nth-child(3) { background-color: #ffe66d; }
+    .grid button:nth-child(4) { background-color: #9ae19d; }
+    .grid button:nth-child(5) { background-color: #70c1b3; }
+    .grid button:nth-child(6) { background-color: #4dabf7; }
+    .grid button:nth-child(7) { background-color: #a29bfe; }
+    .grid button:nth-child(8) { background-color: #d291bc; }
+    .grid button:nth-child(9) { background-color: #ff9ff3; }
+    .grid button:nth-child(10) { background-color: #f368e0; }
+  </style>
 </head>
 <body>
-    <header>
-    <h1>Home</h1>
-    <a href="index.html">Home</a>
-    </header>
-    <main class="login-container">
-          <div class="header-group">
-              <img src="images/logo.jpg" alt="Aaradhya Pharmaceuticals Logo">
-              <h2 style="text-align:center">Aaradhya Pharmaceuticals</h2>
-          </div>
-          <div class="login-group">
-           <form id="loginForm" class="login-form">
-            <h2 style="text-align:center">Login</h2>
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password">
-            <button type="submit">Login</button>
-            <a href="#" class="forgot-password">Forgot Password?</a>
-            <p id="errorMessage" class="text-danger text-center mt-3"></p>
-           </form>
-	  </div>
-     </main>
-       <footer>
-          <a href="#">Contact Us</a> | <a href="#">Privacy Policy | <a href="offers.html">Offers</a>
-	   <p>&copy; 2024 Aaradhya Pharmaceuticals. All rights reserved.</p>
-       </footer>
-  <script src="scripts/config.js"></script>
-  <script src="scripts/pagination.js"></script>
-  <script src="scripts/google-sheets-api.js"></script>
-  <script src="scripts/auth.js"></script>
-</body>
-</html>
+  <canvas id="confetti"></canvas>
+  <div class="container">
+    <div id="welcome">
+      <h1>Welcome to The Type Finder!</h1>
+      <p>Find out what type you are today!</p>
+      <button onclick="playSound(); showStep('number')">START</button>
+    </div>
 
+    <div id="number" class="hidden">
+      <h2>Pick a number from 1 to 10</h2>
+      <div class="grid">
+        <button onclick="playSound(); selectNumber(1)">1</button>
+        <button onclick="playSound(); selectNumber(2)">2</button>
+        <button onclick="playSound(); selectNumber(3)">3</button>
+        <button onclick="playSound(); selectNumber(4)">4</button>
+        <button onclick="playSound(); selectNumber(5)">5</button>
+        <button onclick="playSound(); selectNumber(6)">6</button>
+        <button onclick="playSound(); selectNumber(7)">7</button>
+        <button onclick="playSound(); selectNumber(8)">8</button>
+        <button onclick="playSound(); selectNumber(9)">9</button>
+        <button onclick="playSound(); selectNumber(10)">10</button>
+      </div>
+    </div>
+
+    <div id="character" class="hidden">
+      <h2>Now, choose a character</h2>
+      <img id="avatar" class="avatar" src="" alt="Avatar" />
+      <button onclick="playSound(); selectCharacter('BOY')">BOY</button>
+      <button onclick="playSound(); selectCharacter('GIRL')">GIRL</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Here's Your Type!</h2>
+      <h1 id="userType"></h1>
+      <button onclick="playSound(); restart()">PLAY AGAIN</button>
+    </div>
+  </div>
+
+  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e0c3f1b3f.mp3?filename=click-124467.mp3"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    let selectedNumber = null;
+    let themeIndex = 0;
+
+    const types = {
+      BOY: [
+        "Handsome", "Smart", "Brave", "Witty", "Excellent",
+        "Charming", "Clever", "Superstar", "Good", "Genius"
+      ],
+      GIRL: [
+        "Beautiful", "Smart", "Creative", "Witty", "Excellent",
+        "Kind", "Clever", "Amazing", "Good", "Brilliant"
+      ]
+    };
+
+    const themes = [
+      "linear-gradient(to right, #fceabb, #f8b500)",
+      "linear-gradient(to right, #a1c4fd, #c2e9fb)",
+      "linear-gradient(to right, #fbc2eb, #a6c1ee)",
+      "linear-gradient(to right, #d4fc79, #96e6a1)",
+      "linear-gradient(to right, #ffecd2, #fcb69f)"
+    ];
+
+    const avatars = {
+      BOY: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
+      GIRL: "https://cdn-icons-png.flaticon.com/512/4140/4140051.png"
+    };
+
+    function showStep(step) {
+      document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
+      document.getElementById(step).classList.remove('hidden');
+
+      if (step === 'character') {
+        document.getElementById('avatar').src = avatars.BOY;
+      }
+    }
+
+    function selectNumber(num) {
+      selectedNumber = num;
+      showStep('character');
+    }
+
+    function selectCharacter(gender) {
+      const type = types[gender][selectedNumber - 1];
+      document.getElementById('userType').textContent = `You are ${type}!`;
+      document.getElementById('avatar').src = avatars[gender];
+      showStep('result');
+      launchConfetti();
+    }
+
+    function restart() {
+      selectedNumber = null;
+      themeIndex = (themeIndex + 1) % themes.length;
+      document.body.style.background = themes[themeIndex];
+      showStep('welcome');
+    }
+
+    function playSound() {
+      document.getElementById('clickSound').play();
+    }
+
+    function launchConfetti() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+
+    // Initial theme
+    document.body.style.background = themes[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/ruanvalente/origamid/tree/08d21800775d80bfbbc007cee39983bc81acf996/javascript-es6+%2Fmodulos%2Fmod-07%2Fmod-07.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/lzh-yi/Web-Fork-/tree/024b3e55587afdf9f05a677613a75f24e3d1803e/03-CSS%E8%BF%9B%E9%98%B6%2F04-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%EF%BC%9F.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")[themeIndex
