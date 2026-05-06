@@ -1,234 +1,759 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>The Type Finder</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-      color: #333;
-      font-size: 2.5vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow-x: hidden;
-      transition: background 0.5s ease;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 700px;
-      padding: 5vh 4vw;
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      text-align: center;
-      animation: fadeIn 1s ease-in;
-    }
-
-    h1, h2 {
-      font-size: 3vh;
-      margin-bottom: 2vh;
-      animation: slideDown 0.6s ease-out;
-    }
-
-    p {
-      font-size: 2.2vh;
-      margin-bottom: 3vh;
-    }
-
-    button {
-      margin: 1vh;
-      padding: 2vh 4vw;
-      font-size: 2.2vh;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      background-color: #f8b500;
-      color: white;
-      transition: transform 0.2s ease, background 0.3s;
-      animation: bounceIn 0.5s ease;
-    }
-
-    button:hover {
-      background-color: #e09e00;
-      transform: scale(1.05);
-    }
-
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 2vh;
-    }
-
-    .grid button {
-      width: 12vw;
-      min-width: 60px;
-      margin: 1vh;
-      font-weight: bold;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .avatar {
-      width: 120px;
-      margin-bottom: 2vh;
-      animation: bounceIn 0.6s ease;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 9999;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    @keyframes bounceIn {
-      0% { transform: scale(0.8); opacity: 0; }
-      60% { transform: scale(1.1); opacity: 1; }
-      100% { transform: scale(1); }
-    }
-
-    .grid button:nth-child(1) { background-color: #ff6b6b; }
-    .grid button:nth-child(2) { background-color: #ffb347; }
-    .grid button:nth-child(3) { background-color: #ffe66d; }
-    .grid button:nth-child(4) { background-color: #9ae19d; }
-    .grid button:nth-child(5) { background-color: #70c1b3; }
-    .grid button:nth-child(6) { background-color: #4dabf7; }
-    .grid button:nth-child(7) { background-color: #a29bfe; }
-    .grid button:nth-child(8) { background-color: #d291bc; }
-    .grid button:nth-child(9) { background-color: #ff9ff3; }
-    .grid button:nth-child(10) { background-color: #f368e0; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Super Learner — CBSE Class 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+--orange:#ff6b35;
+--blue:#2196f3;
+--green:#4caf50;
+--purple:#9c27b0;
+--red:#f44336;
+--yellow:#f9a825;
+--bg:#fff8f0;
+--card:#ffffff;
+--text:#222;
+--shadow:0 4px 18px rgba(0,0,0,0.08);
+--radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:'Nunito',sans-serif;
+background:var(--bg);
+color:var(--text);
+max-width:430px;
+margin:auto;
+padding-bottom:90px;
+}
+.topbar{
+background:linear-gradient(135deg,#ff6b35,#ff9a3c);
+padding:18px;
+position:sticky;
+top:0;
+z-index:100;
+color:white;
+box-shadow:var(--shadow);
+}
+.title{font-family:'Fredoka';font-size:28px}
+.subtitle{font-size:12px;font-weight:700;opacity:.85}
+.container{padding:16px}
+.section-title{
+font-family:'Fredoka';
+font-size:24px;
+margin-bottom:6px;
+}
+.section-sub{font-size:13px;color:#777;margin-bottom:16px}
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+.card{
+background:white;
+border-radius:18px;
+padding:16px;
+box-shadow:var(--shadow);
+}
+.subject-card{
+color:white;
+min-height:140px;
+position:relative;
+overflow:hidden;
+cursor:pointer;
+}
+.subject-card::after{
+content:'';
+position:absolute;
+width:100px;
+height:100px;
+border-radius:50%;
+background:rgba(255,255,255,0.15);
+right:-30px;
+bottom:-30px;
+}
+.math{background:linear-gradient(135deg,#ff6b35,#ff9a3c)}
+.english{background:linear-gradient(135deg,#2196f3,#42a5f5)}
+.evs{background:linear-gradient(135deg,#9c27b0,#ba68c8)}
+.hindi{background:linear-gradient(135deg,#f44336,#ef5350)}
+.science{background:linear-gradient(135deg,#43a047,#66bb6a)}
+.gk{background:linear-gradient(135deg,#f9a825,#ffd54f);color:#333}
+.emoji{font-size:40px;margin-bottom:8px}
+.subject-name{font-family:'Fredoka';font-size:20px}
+.chapter-count{font-size:12px;font-weight:700;margin-top:5px}
+.streak{
+background:linear-gradient(135deg,#1a1a2e,#16213e);
+color:white;
+display:flex;
+gap:16px;
+align-items:center;
+margin-bottom:16px;
+}
+.streak .fire{font-size:50px}
+.streak .days{font-family:'Fredoka';font-size:34px}
+.quick-row{display:flex;gap:10px;overflow:auto;margin-bottom:18px}
+.quick-pill{
+background:white;
+padding:10px 16px;
+border-radius:30px;
+box-shadow:var(--shadow);
+white-space:nowrap;
+font-weight:800;
+font-size:13px;
+}
+.chapter-card{
+display:flex;
+gap:12px;
+align-items:center;
+margin-bottom:10px;
+}
+.chapter-num{
+width:40px;
+height:40px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-family:'Fredoka';
+font-size:18px;
+}
+.chapter-title{font-weight:800}
+.chapter-topic{font-size:12px;color:#777}
+.badge{
+padding:5px 10px;
+border-radius:20px;
+font-size:11px;
+font-weight:800;
+}
+.done{background:#e8f5e9;color:#43a047}
+.new{background:#fff3e0;color:#ff6b35}
+.start{background:#f5f5f5;color:#777}
+.hero{
+padding:22px;
+color:white;
+border-radius:20px;
+margin-bottom:18px;
+position:relative;
+overflow:hidden;
+}
+.hero-emoji{
+position:absolute;
+right:15px;
+top:10px;
+font-size:60px;
+opacity:.2;
+}
+.hero-title{font-family:'Fredoka';font-size:30px}
+.hero-desc{font-size:13px;margin-top:5px}
+.progress{
+margin-top:14px;
+}
+.progress-bar{
+height:10px;
+background:rgba(255,255,255,.25);
+border-radius:20px;
+overflow:hidden;
+margin-top:6px;
+}
+.progress-fill{
+height:100%;
+background:white;
+border-radius:20px;
+}
+.note-card{
+margin-bottom:12px;
+border-left:5px solid var(--orange);
+}
+.note-subject{font-size:10px;font-weight:800;text-transform:uppercase;color:#777}
+.note-title{font-size:16px;font-weight:800;margin:5px 0}
+.note-text{font-size:13px;color:#555;line-height:1.6}
+.quiz-card{
+margin-bottom:16px;
+}
+.question{
+font-family:'Fredoka';
+font-size:22px;
+margin-bottom:16px;
+}
+.option{
+padding:14px;
+border:2px solid #eee;
+border-radius:14px;
+margin-bottom:10px;
+font-weight:700;
+cursor:pointer;
+background:white;
+}
+.option.correct{background:#e8f5e9;border-color:#4caf50}
+.option.wrong{background:#ffebee;border-color:#f44336}
+.btn{
+background:linear-gradient(135deg,#ff6b35,#ff9a3c);
+color:white;
+border:none;
+padding:14px;
+width:100%;
+border-radius:14px;
+font-size:16px;
+font-weight:800;
+margin-top:10px;
+}
+.hidden{display:none}
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:50%;
+transform:translateX(-50%);
+max-width:430px;
+width:100%;
+background:white;
+display:flex;
+border-top:2px solid #eee;
+}
+.nav-btn{
+flex:1;
+padding:10px 0;
+background:none;
+border:none;
+font-size:11px;
+font-weight:800;
+color:#666;
+}
+.nav-icon{font-size:22px;display:block}
+.trick-card{
+border-top:4px solid var(--orange);
+margin-bottom:14px;
+}
+.trick-title{font-family:'Fredoka';font-size:18px;margin-bottom:8px}
+.trick-body{font-size:13px;line-height:1.7;color:#555}
+.mnemonic{
+margin-top:10px;
+padding:10px;
+background:#f8f9fa;
+border-radius:12px;
+font-weight:800;
+font-size:14px;
+}
+.practice-box{
+background:#fff3e0;
+padding:14px;
+border-radius:14px;
+margin-top:10px;
+}
+.practice-title{font-weight:800;color:#ff6b35;margin-bottom:8px}
+.flashcard{
+perspective:1000px;
+height:180px;
+margin-bottom:16px;
+}
+.flash-inner{
+position:relative;
+width:100%;
+height:100%;
+transition:transform .6s;
+transform-style:preserve-3d;
+}
+.flashcard.flip .flash-inner{transform:rotateY(180deg)}
+.flash-front,.flash-back{
+position:absolute;
+width:100%;
+height:100%;
+backface-visibility:hidden;
+background:white;
+border-radius:20px;
+box-shadow:var(--shadow);
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+.flash-back{transform:rotateY(180deg);background:#fff3ee}
+.flash-q{font-family:'Fredoka';font-size:30px}
+.flash-a{font-family:'Fredoka';font-size:36px;color:var(--orange)}
+.audio-btn{
+background:#2196f3;
+color:white;
+border:none;
+padding:10px 14px;
+border-radius:12px;
+font-weight:800;
+margin-top:10px;
+}
+</style>
 </head>
-<body>
-  <canvas id="confetti"></canvas>
-  <div class="container">
-    <div id="welcome">
-      <h1>Welcome to The Type Finder!</h1>
-      <p>Find out what type you are today!</p>
-      <button onclick="playSound(); showStep('number')">START</button>
-    </div>
+<body><div class="topbar">
+<div class="title">🎒 Super Learner</div>
+<div class="subtitle">CBSE Class 3 Complete Learning App</div>
+</div><div class="container" id="homeView"><div class="card streak">
+<div class="fire">🔥</div>
+<div>
+<div class="days">12</div>
+<div>Day Learning Streak</div>
+</div>
+</div><div class="quick-row">
+<div class="quick-pill">🎯 Daily Quiz</div>
+<div class="quick-pill">📝 Worksheets</div>
+<div class="quick-pill">⭐ Flashcards</div>
+<div class="quick-pill">📚 Revision</div>
+</div><div class="section-title">Subjects</div>
+<div class="section-sub">Complete CBSE Class 3 syllabus</div><div class="grid">
+<div class="card subject-card math" onclick="openSubject('math')">
+<div class="emoji">🔢</div>
+<div class="subject-name">Mathematics</div>
+<div class="chapter-count">14 Chapters</div>
+</div><div class="card subject-card english" onclick="openSubject('english')">
+<div class="emoji">📖</div>
+<div class="subject-name">English</div>
+<div class="chapter-count">10 Chapters</div>
+</div><div class="card subject-card evs" onclick="openSubject('evs')">
+<div class="emoji">🌿</div>
+<div class="subject-name">EVS</div>
+<div class="chapter-count">24 Chapters</div>
+</div><div class="card subject-card hindi" onclick="openSubject('hindi')">
+<div class="emoji">🇮🇳</div>
+<div class="subject-name">Hindi</div>
+<div class="chapter-count">15 Chapters</div>
+</div><div class="card subject-card science" onclick="openSubject('science')">
+<div class="emoji">🔬</div>
+<div class="subject-name">Science</div>
+<div class="chapter-count">12 Chapters</div>
+</div><div class="card subject-card gk" onclick="openSubject('gk')">
+<div class="emoji">🌍</div>
+<div class="subject-name">General Knowledge</div>
+<div class="chapter-count">8 Topics</div>
+</div>
+</div><div style="height:20px"></div><div class="section-title">⭐ Featured Learning</div>
+<div class="card">
+<div style="font-family:'Fredoka';font-size:20px">Tables up to 25</div>
+<div style="font-size:13px;color:#666;margin-top:6px;line-height:1.6">
+Master multiplication tables with games, tricks, flashcards and quizzes.
+</div>
+<button class="btn">Start Learning</button>
+</div></div><div class="container hidden" id="subjectView"></div>
+<div class="container hidden" id="quizView"></div>
+<div class="container hidden" id="flashcardView"></div>
+<div class="container hidden" id="notesView"></div>
+<div class="container hidden" id="worksheetView"></div><div class="bottom-nav">
+<button class="nav-btn" onclick="goHome()"><span class="nav-icon">🏠</span>Home</button>
+<button class="nav-btn" onclick="showFlashcards()"><span class="nav-icon">⭐</span>Cards</button>
+<button class="nav-btn" onclick="showQuiz()"><span class="nav-icon">🎯</span>Quiz</button>
+<button class="nav-btn" onclick="showNotes()"><span class="nav-icon">📝</span>Notes</button>
+<button class="nav-btn" onclick="showWorksheets()"><span class="nav-icon">📄</span>Worksheets</button>
+</div><script>
+const subjects={
+math:{
+name:'Mathematics',
+emoji:'🔢',
+class:'math',
+progress:65,
+desc:'Learn numbers, tables, fractions, money and geometry.',
+chapters:[
+{name:'Numbers up to 9999',topic:'Place value, comparison',status:'done'},
+{name:'Addition',topic:'Carry method, word sums',status:'done'},
+{name:'Subtraction',topic:'Borrowing method',status:'done'},
+{name:'Multiplication',topic:'Tables up to 25',status:'new'},
+{name:'Division',topic:'Equal sharing',status:'new'},
+{name:'Fractions',topic:'Half and quarter',status:'start'},
+{name:'Money',topic:'Rupees and paise',status:'start'},
+{name:'Time',topic:'Clock and calendar',status:'start'},
+{name:'Measurement',topic:'Length and weight',status:'start'},
+{name:'Geometry',topic:'Shapes and patterns',status:'start'}
+]
+},
+english:{
+name:'English',
+emoji:'📖',
+class:'english',
+progress:58,
+desc:'Grammar, reading, vocabulary and writing skills.',
+chapters:[
+{name:'Nouns',topic:'Naming words',status:'done'},
+{name:'Pronouns',topic:'He, She, They',status:'done'},
+{name:'Verbs',topic:'Action words',status:'new'},
+{name:'Adjectives',topic:'Describing words',status:'new'},
+{name:'Tenses',topic:'Past, Present, Future',status:'start'},
+{name:'Comprehension',topic:'Reading passages',status:'start'},
+{name:'Paragraph Writing',topic:'Creative writing',status:'start'}
+]
+},
+evs:{
+name:'EVS',
+emoji:'🌿',
+class:'evs',
+progress:45,
+desc:'Learn about plants, animals, water and our environment.',
+chapters:[
+{name:'Plants Around Us',topic:'Parts of plants',status:'done'},
+{name:'Animals Around Us',topic:'Habitats and food',status:'new'},
+{name:'Water',topic:'Uses and sources',status:'new'},
+{name:'Food We Eat',topic:'Healthy food',status:'start'},
+{name:'Our Family',topic:'Family roles',status:'start'}
+]
+}
+};
 
-    <div id="number" class="hidden">
-      <h2>Pick a number from 1 to 10</h2>
-      <div class="grid">
-        <button onclick="playSound(); selectNumber(1)">1</button>
-        <button onclick="playSound(); selectNumber(2)">2</button>
-        <button onclick="playSound(); selectNumber(3)">3</button>
-        <button onclick="playSound(); selectNumber(4)">4</button>
-        <button onclick="playSound(); selectNumber(5)">5</button>
-        <button onclick="playSound(); selectNumber(6)">6</button>
-        <button onclick="playSound(); selectNumber(7)">7</button>
-        <button onclick="playSound(); selectNumber(8)">8</button>
-        <button onclick="playSound(); selectNumber(9)">9</button>
-        <button onclick="playSound(); selectNumber(10)">10</button>
-      </div>
-    </div>
+function hideAll(){
+document.querySelectorAll('.container').forEach(v=>v.classList.add('hidden'));
+}
 
-    <div id="character" class="hidden">
-      <h2>Now, choose a character</h2>
-      <img id="avatar" class="avatar" src="" alt="Avatar" />
-      <button onclick="playSound(); selectCharacter('BOY')">BOY</button>
-      <button onclick="playSound(); selectCharacter('GIRL')">GIRL</button>
-    </div>
+function goHome(){
+hideAll();
+document.getElementById('homeView').classList.remove('hidden');
+}
 
-    <div id="result" class="hidden">
-      <h2>Here's Your Type!</h2>
-      <h1 id="userType"></h1>
-      <button onclick="playSound(); restart()">PLAY AGAIN</button>
-    </div>
-  </div>
+function openSubject(key){
+const s=subjects[key];
+hideAll();
+const view=document.getElementById('subjectView');
+view.classList.remove('hidden');
 
-  <audio id="clickSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7e0c3f1b3f.mp3?filename=click-124467.mp3"></audio>
+view.innerHTML=`
+<button class="btn" onclick="goHome()">← Back to Home</button>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    let selectedNumber = null;
-    let themeIndex = 0;
+<div class="hero ${s.class}">
+<div class="hero-emoji">${s.emoji}</div>
+<div class="hero-title">${s.name}</div>
+<div class="hero-desc">${s.desc}</div>
+<div class="progress">
+<div>${s.progress}% completed</div>
+<div class="progress-bar">
+<div class="progress-fill" style="width:${s.progress}%"></div>
+</div>
+</div>
+</div>
 
-    const types = {
-      BOY: [
-        "Handsome", "Smart", "Brave", "Witty", "Excellent",
-        "Charming", "Clever", "Superstar", "Good", "Genius"
-      ],
-      GIRL: [
-        "Beautiful", "Smart", "Creative", "Witty", "Excellent",
-        "Kind", "Clever", "Amazing", "Good", "Brilliant"
-      ]
-    };
+<div class="section-title">📚 Chapters</div>
 
-    const themes = [
-      "linear-gradient(to right, #fceabb, #f8b500)",
-      "linear-gradient(to right, #a1c4fd, #c2e9fb)",
-      "linear-gradient(to right, #fbc2eb, #a6c1ee)",
-      "linear-gradient(to right, #d4fc79, #96e6a1)",
-      "linear-gradient(to right, #ffecd2, #fcb69f)"
-    ];
+${s.chapters.map((c,i)=>`
+<div class="card chapter-card">
+<div class="chapter-num" style="background:${getColor(key)}">${i+1}</div>
+<div style="flex:1">
+<div class="chapter-title">${c.name}</div>
+<div class="chapter-topic">${c.topic}</div>
+</div>
+<div class="badge ${c.status}">${badgeText(c.status)}</div>
+</div>
+`).join('')}
 
-    const avatars = {
-      BOY: "https://cdn-icons-png.flaticon.com/512/4140/4140048.png",
-      GIRL: "https://cdn-icons-png.flaticon.com/512/4140/4140051.png"
-    };
+<div style="height:12px"></div>
 
-    function showStep(step) {
-      document.querySelectorAll('.container > div').forEach(div => div.classList.add('hidden'));
-      document.getElementById(step).classList.remove('hidden');
+<div class="section-title">🧠 Smart Notes</div>
 
-      if (step === 'character') {
-        document.getElementById('avatar').src = avatars.BOY;
-      }
-    }
+<div class="card note-card">
+<div class="note-subject">${s.name}</div>
+<div class="note-title">Important Revision Notes</div>
+<div class="note-text">
+⭐ Practice daily for 20 minutes.<br><br>
+⭐ Revise previous chapter before learning a new chapter.<br><br>
+⭐ Solve word problems slowly and carefully.<br><br>
+⭐ Use diagrams and drawings to understand concepts better.
+</div>
+</div>
 
-    function selectNumber(num) {
-      selectedNumber = num;
-      showStep('character');
-    }
+<div class="section-title">💡 Memory Tricks</div>
 
-    function selectCharacter(gender) {
-      const type = types[gender][selectedNumber - 1];
-      document.getElementById('userType').textContent = `You are ${type}!`;
-      document.getElementById('avatar').src = avatars[gender];
-      showStep('result');
-      launchConfetti();
-    }
+<div class="card trick-card">
+<div class="trick-title">Easy Learning Trick</div>
+<div class="trick-body">
+${getTrick(key)}
+</div>
+<div class="mnemonic">${getMnemonic(key)}</div>
+</div>
 
-    function restart() {
-      selectedNumber = null;
-      themeIndex = (themeIndex + 1) % themes.length;
-      document.body.style.background = themes[themeIndex];
-      showStep('welcome');
-    }
+<div class="section-title">📝 Practice Questions</div>
 
-    function playSound() {
-      document.getElementById('clickSound').play();
-    }
+<div class="card">
+<div class="practice-box">
+<div class="practice-title">Practice Time!</div>
+${getPractice(key)}
+</div>
+<button class="btn" onclick="showQuiz()">🎯 Start Quiz</button>
+</div>
 
-    function launchConfetti() {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }
+<div class="section-title">🔊 Audio Learning</div>
+<div class="card">
+<div style="font-weight:800;font-size:18px">Listen to this chapter</div>
+<div style="font-size:13px;color:#666;margin-top:6px;line-height:1.6">
+Audio explanations help students remember concepts faster.
+</div>
+<button class="audio-btn" onclick="speakText('${s.desc}')">🔊 Listen</button>
+</div>
+`;
+}
 
-    // Initial theme
-    document.body.style.background = themes[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/ruanvalente/origamid/tree/08d21800775d80bfbbc007cee39983bc81acf996/javascript-es6+%2Fmodulos%2Fmod-07%2Fmod-07.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "1")[43dcd9a7-70db-4a1f-b0ae-981daa162054](https://github.com/lzh-yi/Web-Fork-/tree/024b3e55587afdf9f05a677613a75f24e3d1803e/03-CSS%E8%BF%9B%E9%98%B6%2F04-%E5%A6%82%E4%BD%95%E8%AE%A9%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%EF%BC%9F.md?citationMarker=43dcd9a7-70db-4a1f-b0ae-981daa162054 "2")[themeIndex
+function getColor(key){
+return {
+math:'#ff6b35',
+english:'#2196f3',
+evs:'#9c27b0'
+}[key]||'#ff6b35';
+}
+
+function badgeText(status){
+if(status==='done') return '✅ Done';
+if(status==='new') return '🆕 New';
+return '📖 Start';
+}
+
+function getTrick(key){
+const tricks={
+math:'To multiply by 10, simply add a zero at the end of the number.',
+english:'Remember vowels using AEIOU song.',
+evs:'Plants need sunlight, water and air to make food.'
+};
+return tricks[key]||'Practice every day.';
+}
+
+function getMnemonic(key){
+const m={
+math:'5 × 6 = 30 → Think: Five Six = Thirty Tricks!',
+english:'AEIOU are the vowels!',
+evs:'Roots drink • Stem carries • Leaves cook food'
+};
+return m[key]||'Learning is fun!';
+}
+
+function getPractice(key){
+const q={
+math:'1. What is 45 + 26?<br>2. Write table of 7.<br>3. Draw a triangle.',
+english:'1. Write 5 nouns.<br>2. Make sentence using "beautiful".<br>3. Write opposite of hot.',
+evs:'1. Name 3 water sources.<br>2. Draw a plant and label parts.<br>3. Why do we need food?'
+};
+return q[key]||'Practice daily.';
+}
+
+const quiz=[
+{
+q:'What is 45 + 37?',
+options:['72','82','92','62'],
+answer:1
+},
+{
+q:'Which is a noun?',
+options:['Run','Apple','Quickly','Blue'],
+answer:1
+},
+{
+q:'Which part of plant makes food?',
+options:['Root','Flower','Leaf','Stem'],
+answer:2
+}
+];
+
+let currentQuestion=0;
+let score=0;
+
+function showQuiz(){
+hideAll();
+const view=document.getElementById('quizView');
+view.classList.remove('hidden');
+renderQuiz();
+}
+
+function renderQuiz(){
+const q=quiz[currentQuestion];
+const view=document.getElementById('quizView');
+
+view.innerHTML=`
+<div class="section-title">🎯 Quiz Challenge</div>
+<div class="section-sub">Question ${currentQuestion+1} of ${quiz.length}</div>
+
+<div class="card quiz-card">
+<div class="question">${q.q}</div>
+
+${q.options.map((o,i)=>`
+<div class="option" onclick="checkAnswer(${i})">${o}</div>
+`).join('')}
+</div>
+`;
+}
+
+function checkAnswer(i){
+const q=quiz[currentQuestion];
+const options=document.querySelectorAll('.option');
+
+options.forEach((o,index)=>{
+if(index===q.answer) o.classList.add('correct');
+if(index===i && index!==q.answer) o.classList.add('wrong');
+});
+
+if(i===q.answer) score++;
+
+setTimeout(()=>{
+currentQuestion++;
+if(currentQuestion<quiz.length){
+renderQuiz();
+}else{
+showResult();
+}
+},1200);
+}
+
+function showResult(){
+const view=document.getElementById('quizView');
+const percent=Math.round(score/quiz.length*100);
+
+view.innerHTML=`
+<div class="card" style="text-align:center;padding:30px">
+<div style="font-size:70px">🏆</div>
+<div style="font-family:'Fredoka';font-size:46px;color:var(--orange)">${percent}%</div>
+<div style="font-size:16px;font-weight:800;margin:8px 0">You scored ${score}/${quiz.length}</div>
+<div style="font-size:13px;color:#666;line-height:1.7">
+Great job! Keep practicing every day to become a Super Learner.
+</div>
+<button class="btn" onclick="restartQuiz()">🔄 Try Again</button>
+<button class="btn" onclick="goHome()">🏠 Home</button>
+</div>
+`;
+}
+
+function restartQuiz(){
+currentQuestion=0;
+score=0;
+showQuiz();
+}
+
+function showFlashcards(){
+hideAll();
+const view=document.getElementById('flashcardView');
+view.classList.remove('hidden');
+
+view.innerHTML=`
+<div class="section-title">⭐ Flashcards</div>
+<div class="section-sub">Tap card to flip</div>
+
+<div class="flashcard" onclick="this.classList.toggle('flip')">
+<div class="flash-inner">
+<div class="flash-front">
+<div class="flash-q">7 × 8</div>
+<div style="margin-top:12px">Tap to reveal answer</div>
+</div>
+<div class="flash-back">
+<div class="flash-a">56</div>
+</div>
+</div>
+</div>
+
+<div class="flashcard" onclick="this.classList.toggle('flip')">
+<div class="flash-inner">
+<div class="flash-front">
+<div class="flash-q">National Bird of India</div>
+</div>
+<div class="flash-back">
+<div class="flash-a">🦚 Peacock</div>
+</div>
+</div>
+</div>
+
+<div class="flashcard" onclick="this.classList.toggle('flip')">
+<div class="flash-inner">
+<div class="flash-front">
+<div class="flash-q">Plural of Child</div>
+</div>
+<div class="flash-back">
+<div class="flash-a">Children</div>
+</div>
+</div>
+</div>
+`;
+}
+
+function showNotes(){
+hideAll();
+const view=document.getElementById('notesView');
+view.classList.remove('hidden');
+
+view.innerHTML=`
+<div class="section-title">📝 Smart Notes</div>
+<div class="section-sub">Quick revision notes for exams</div>
+
+<div class="card note-card">
+<div class="note-subject">Mathematics</div>
+<div class="note-title">Tables Revision</div>
+<div class="note-text">
+⭐ Learn tables up to 25.<br><br>
+⭐ Practice 5 tables daily.<br><br>
+⭐ Use skip counting for faster multiplication.
+</div>
+</div>
+
+<div class="card note-card" style="border-left-color:#2196f3">
+<div class="note-subject">English</div>
+<div class="note-title">Grammar Basics</div>
+<div class="note-text">
+📌 Noun = naming word<br>
+📌 Verb = action word<br>
+📌 Adjective = describing word
+</div>
+</div>
+
+<div class="card note-card" style="border-left-color:#9c27b0">
+<div class="note-subject">EVS</div>
+<div class="note-title">Plant Parts</div>
+<div class="note-text">
+🌱 Roots absorb water.<br>
+🌱 Stem carries food.<br>
+🌱 Leaves prepare food.
+</div>
+</div>
+`;
+}
+
+function showWorksheets(){
+hideAll();
+const view=document.getElementById('worksheetView');
+view.classList.remove('hidden');
+
+view.innerHTML=`
+<div class="section-title">📄 Worksheets</div>
+<div class="section-sub">Printable practice sheets</div>
+
+<div class="card" style="margin-bottom:14px">
+<div style="font-family:'Fredoka';font-size:20px">🔢 Maths Worksheet</div>
+<div style="font-size:13px;color:#666;margin-top:6px;line-height:1.7">
+Includes:
+<br>• Addition
+<br>• Subtraction
+<br>• Tables
+<br>• Shapes
+</div>
+<button class="btn">⬇ Download PDF</button>
+</div>
+
+<div class="card" style="margin-bottom:14px">
+<div style="font-family:'Fredoka';font-size:20px">📖 English Worksheet</div>
+<div style="font-size:13px;color:#666;margin-top:6px;line-height:1.7">
+Includes:
+<br>• Grammar
+<br>• Vocabulary
+<br>• Comprehension
+<br>• Writing Practice
+</div>
+<button class="btn">⬇ Download PDF</button>
+</div>
+
+<div class="card">
+<div style="font-family:'Fredoka';font-size:20px">🌿 EVS Worksheet</div>
+<div style="font-size:13px;color:#666;margin-top:6px;line-height:1.7">
+Includes:
+<br>• Plants
+<br>• Animals
+<br>• Water
+<br>• Food
+</div>
+<button class="btn">⬇ Download PDF</button>
+</div>
+`;
+}
+
+function speakText(text){
+const speech=new SpeechSynthesisUtterance(text);
+speech.lang='en-IN';
+speech.rate=0.9;
+speech.pitch=1;
+window.speechSynthesis.speak(speech);
+}
+</script></body>
+</html>
