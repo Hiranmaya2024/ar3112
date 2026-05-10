@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<!-- Aaradhya Pharmaceuticals Order App v1.4.0 -->
+<html lang="en" data-theme="pharma" data-lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Aaradhya Pharmaceuticals</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Oriya:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --hdr-bg:#0a2e52;--accent:#1a6bbd;--accent-light:#e8f2ff;
+  --add-btn:#1a6bbd;--add-btn-text:#fff;
+  --cart-bg:#0a2e52;--cart-text:#fff;
+  --checkout-bg:#22c55e;--checkout-text:#fff;
+  --card-bg:#ffffff;--card-shadow:0 2px 12px rgba(10,46,82,.09);
+  --body-bg:#f0f4f9;--text-primary:#12243a;--text-secondary:#5a7a99;
+  --border:#dae3ef;--input-bg:rgba(255,255,255,.13);--input-border:rgba(255,255,255,.25);
+  --radius:14px;--radius-sm:9px;--tr:0.18s cubic-bezier(.4,0,.2,1);
+  --font:'DM Sans',sans-serif;--font-d:'Playfair Display',serif;
+}
+[data-theme="darknight"]{--hdr-bg:#0f0f1a;--accent:#7c5ce8;--accent-light:#1a1435;--add-btn:#7c5ce8;--cart-bg:#1a0f3a;--checkout-bg:#5c3ddb;--card-bg:#181828;--card-shadow:0 2px 12px rgba(0,0,0,.4);--body-bg:#0d0d1a;--text-primary:#e8e0ff;--text-secondary:#9b8ec4;--border:#2d2550;--input-bg:rgba(255,255,255,.07);--input-border:rgba(255,255,255,.15)}
+[data-theme="jungle"]{--hdr-bg:#1a3d1a;--accent:#33a854;--accent-light:#e8f5e9;--add-btn:#33a854;--cart-bg:#1a3d1a;--checkout-bg:#f9a825;--checkout-text:#1a3d1a;--card-bg:#fff;--body-bg:#f1f8f1;--text-primary:#1a3d1a;--text-secondary:#4a7a4a;--border:#c8e6c9}
+[data-theme="avengers"]{--hdr-bg:#7b0000;--accent:#e53935;--accent-light:#fff3f3;--add-btn:#e53935;--cart-bg:#1a1a2e;--checkout-bg:#ffd600;--checkout-text:#1a1a2e;--card-bg:#fff;--body-bg:#f5f5f5;--text-primary:#1a1a2e;--text-secondary:#6a6a8e;--border:#e0e0ee}
+[data-theme="indian"]{--hdr-bg:#ff6f00;--accent:#f57c00;--accent-light:#fff8e1;--add-btn:#f57c00;--cart-bg:#bf360c;--checkout-bg:#388e3c;--card-bg:#fffdf7;--body-bg:#fff8e1;--text-primary:#3e2723;--text-secondary:#795548;--border:#ffe0b2}
+html{font-size:16px}
+body{font-family:var(--font);background:var(--body-bg);color:var(--text-primary);min-height:100vh;padding-bottom:120px;-webkit-font-smoothing:antialiased}
+[data-lang="hi"] body,[data-lang="hi"] input,[data-lang="hi"] select,[data-lang="hi"] button{font-family:'Noto Sans Devanagari','DM Sans',sans-serif}
+[data-lang="od"] body,[data-lang="od"] input,[data-lang="od"] select,[data-lang="od"] button{font-family:'Noto Sans Oriya','DM Sans',sans-serif}
+.header{background:var(--hdr-bg);position:sticky;top:0;z-index:100;box-shadow:0 3px 20px rgba(0,0,0,.25)}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;gap:8px}
+.brand{display:flex;align-items:center;gap:9px;flex:1;min-width:0}
+.brand-icon{font-size:1.6rem;flex-shrink:0}
+.brand-text{display:flex;flex-direction:column;gap:1px;min-width:0}
+.brand-name{font-family:var(--font-d);font-size:1.05rem;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+.brand-version{font-size:.65rem;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.06em}
+.header-actions{display:flex;gap:6px;flex-shrink:0}
+.theme-btn,.lang-btn{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.25);border-radius:8px;padding:7px 10px;font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:var(--tr)}
+.theme-btn:hover,.lang-btn:hover{background:rgba(255,255,255,.25)}
+.hrow{padding:0 16px 10px;display:grid;gap:8px}
+.hrow.cols2{grid-template-columns:1fr 1fr}
+.hrow.cols1{grid-template-columns:1fr;padding-bottom:14px}
+.header input,.header select{background:var(--input-bg);border:1px solid var(--input-border);border-radius:var(--radius-sm);padding:10px 13px;color:#fff;font-family:inherit;font-size:.88rem;width:100%;outline:none;transition:border-color .2s,background .2s}
+.header input::placeholder{color:rgba(255,255,255,.55)}
+.header input:focus,.header select:focus{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.5)}
+.header select{-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.7)' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;cursor:pointer}
+.header select option{background:#1a2a3a;color:#fff}
+.swrap{position:relative}
+.swrap input{padding-left:36px}
+.sicon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.9rem;pointer-events:none;opacity:.65}
+.input-error{border-color:#ef4444!important;background:rgba(239,68,68,.22)!important;animation:shake .4s ease both}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+#list{padding:12px 12px 4px;display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:540px){#list{grid-template-columns:1fr 1fr}}
+@media(min-width:860px){#list{grid-template-columns:repeat(3,1fr);padding:16px;gap:14px}}
+@media(min-width:1100px){#list{grid-template-columns:repeat(4,1fr)}}
+.item-img-wrap{width:100px;align-self:stretch;border-radius:10px;overflow:hidden;background:var(--body-bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;position:relative}
+.item-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.item-img-wrap:hover img{transform:scale(1.04)}
+.item-img-wrap .img-tap-hint{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.45);color:#fff;font-size:.55rem;padding:2px 5px;border-radius:4px;pointer-events:none;opacity:0;transition:opacity .2s}
+.item-img-wrap:hover .img-tap-hint{opacity:1}
+.item-img-blank{width:100%;height:100%;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text-secondary);cursor:default}
+.item-img-blank span{font-size:1.5rem;opacity:.35}
+#lightbox{display:none;position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.92);backdrop-filter:blur(6px);flex-direction:column;align-items:center;justify-content:center}
+#lightbox.show{display:flex}
+#lightbox-img-wrap{position:relative;width:100%;flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+#lightbox-img{max-width:90vw;max-height:75vh;object-fit:contain;border-radius:8px;transform-origin:center center;transition:transform .15s ease;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.lb-bar{width:100%;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:10px;flex-shrink:0}
+.lb-title{font-family:var(--font);font-size:.85rem;font-weight:600;color:rgba(255,255,255,.85);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-btn{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);border-radius:8px;width:40px;height:40px;font-size:1.1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;transition:background .15s;font-family:var(--font)}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-btn:active{transform:scale(.93)}
+.lb-controls{display:flex;align-items:center;gap:10px;padding:0 18px 18px}
+.lb-zoom-label{font-size:.78rem;color:rgba(255,255,255,.55);font-family:var(--font);font-weight:600;min-width:38px;text-align:center}
+.item{background:var(--card-bg);border-radius:var(--radius);box-shadow:var(--card-shadow);padding:12px;border:1px solid var(--border);display:flex;flex-direction:row;gap:11px;align-items:stretch;animation:cardIn .25s ease both;transition:box-shadow var(--tr),transform var(--tr)}
+.item:hover{box-shadow:0 6px 24px rgba(10,46,82,.15);transform:translateY(-1px)}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.item-content{display:flex;flex-direction:column;gap:4px;flex:1;min-width:0}
+.item-name{font-weight:700;font-size:.9rem;line-height:1.3;color:var(--text-primary)}
+.item-company{font-size:.68rem;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;background:var(--accent-light);display:inline-block;padding:1px 7px;border-radius:30px}
+.item-pack{font-size:.74rem;color:var(--text-secondary);background:var(--body-bg);border:1px solid var(--border);border-radius:5px;padding:2px 7px;font-weight:500;display:inline-block}
+.item-composition{font-size:.72rem;color:var(--text-secondary);font-style:italic;line-height:1.4;border-left:2px solid var(--accent);padding:2px 0 2px 6px;word-break:break-word}
+.price-row{display:flex;align-items:baseline;gap:6px;margin-top:2px}
+.rate-price{font-size:.98rem;font-weight:700;color:var(--text-primary)}
+.mrp-price{font-size:.75rem;color:var(--text-secondary);text-decoration:line-through}
+.spacer{flex:1}
+.controls{display:flex;align-items:center;margin-top:8px}
+.btn-add{width:100%;padding:9px;background:var(--add-btn);color:var(--add-btn-text);border:none;border-radius:var(--radius-sm);font-family:inherit;font-size:.88rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.btn-add:hover{filter:brightness(1.12)}
+.btn-add:active{transform:scale(.97)}
+.qty-control{display:flex;align-items:center;width:100%;border:2px solid var(--accent);border-radius:var(--radius-sm);overflow:hidden}
+.btn-qty{background:var(--accent);color:#fff;border:none;width:40px;height:38px;font-size:1.2rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--tr)}
+.btn-qty:hover{filter:brightness(1.15)}
+.btn-qty:active{transform:scale(.93)}
+.qty-num{flex:1;text-align:center;font-size:1rem;font-weight:700;color:var(--accent);user-select:none}
+.loading-state,.empty-state{grid-column:1/-1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:14px;color:var(--text-secondary)}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* CART BAR */
+.cart-bar{position:fixed;bottom:0;left:0;right:0;background:var(--cart-bg);color:var(--cart-text);padding:10px 16px 0;display:flex;flex-direction:column;box-shadow:0 -4px 24px rgba(0,0,0,.22);z-index:200}
+.cart-bar-top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-bottom:10px}
+.cart-info{display:flex;flex-direction:column;gap:1px}
+.cart-count{font-size:.75rem;opacity:.8;font-weight:500}
+.cart-total{font-size:1.1rem;font-weight:700}
+.cart-btns{display:flex;gap:7px;align-items:center;flex-shrink:0}
+.btn-bill{background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:var(--radius-sm);padding:10px 13px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:var(--tr)}
+.btn-bill:hover{background:rgba(255,255,255,.28)}
+.btn-checkout{background:var(--checkout-bg);color:var(--checkout-text);border:none;border-radius:var(--radius-sm);padding:10px 14px;font-family:inherit;font-size:.85rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:var(--tr);display:flex;align-items:center;gap:5px}
+.btn-checkout:hover{filter:brightness(1.1)}
+.btn-checkout:active{transform:scale(.96)}
+.cart-footer{border-top:1px solid rgba(255,255,255,.1);padding:6px 0 8px;text-align:center;font-family:var(--font);font-size:.68rem;color:rgba(255,255,255,.5);letter-spacing:.3px;line-height:1.5;display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap}
+.cart-footer .cf-brand{color:rgba(255,255,255,.75);font-weight:600}
+.cart-footer .cf-sep{color:rgba(255,255,255,.25)}
+.cart-footer .cf-tech{color:rgba(160,196,255,.8)}
+.cart-footer .cf-ai{background:linear-gradient(90deg,#00d4aa,#0099ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:700}
+/* LANG SHEET */
+.lang-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;backdrop-filter:blur(2px)}
+.lang-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card-bg);border-radius:20px 20px 0 0;padding:24px 16px 32px;z-index:310;display:none}
+.lang-handle{width:40px;height:4px;background:var(--border);border-radius:10px;margin:0 auto 18px}
+.lang-sheet h3{font-family:var(--font-d);font-size:1.1rem;color:var(--text-primary);margin-bottom:16px;text-align:center}
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.lang-opt{display:flex;flex-direction:column;align-items:center;gap:5px;padding:14px 6px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--body-bg);font-family:inherit;color:var(--text-secondary);transition:var(--tr)}
+.lang-opt:hover,.lang-opt.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+.lang-opt .li{font-size:1.5rem}
+.lang-opt .ln{font-size:1rem;font-weight:700}
+.lang-opt .ls{font-size:.68rem;opacity:.7}
+.lang-close{width:100%;padding:12px;background:var(--body-bg);color:var(--text-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:var(--tr)}
+.lang-close:hover{background:var(--border)}
+/* THEME SHEET */
+.t-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:none;backdrop-filter:blur(2px)}
+.t-sheet{position:fixed;bottom:0;left:0;right:0;background:var(--card-bg);border-radius:20px 20px 0 0;padding:24px 16px 32px;z-index:310;display:none}
+.t-handle{width:40px;height:4px;background:var(--border);border-radius:10px;margin:0 auto 18px}
+.t-sheet h3{font-family:var(--font-d);font-size:1.1rem;color:var(--text-primary);margin-bottom:16px;text-align:center}
+.t-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+@media(max-width:400px){.t-grid{grid-template-columns:repeat(3,1fr)}}
+.t-opt{display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:var(--radius-sm);border:2px solid var(--border);cursor:pointer;background:var(--body-bg);font-family:inherit;font-size:.75rem;font-weight:600;color:var(--text-secondary);transition:var(--tr)}
+.t-opt:hover,.t-opt.active{border-color:var(--accent);background:var(--accent-light);color:var(--accent)}
+.t-opt .ti{font-size:1.6rem}
+.t-close{width:100%;padding:12px;background:var(--body-bg);color:var(--text-secondary);border:1px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;transition:var(--tr)}
+.t-close:hover{background:var(--border)}
+/* MODAL */
+#alertModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:9999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px)}
+#alertModal.show{display:flex}
+.m-box{background:var(--card-bg);border-radius:18px;width:100%;max-width:320px;box-shadow:0 20px 60px rgba(0,0,0,.35);overflow:hidden}
+.m-hdr{background:var(--hdr-bg);padding:12px 18px;display:flex;align-items:center;gap:8px}
+.m-hdr-ico{font-size:1rem}
+.m-hdr-ttl{font-family:var(--font);font-size:.8rem;font-weight:600;color:rgba(255,255,255,.92)}
+.m-body{padding:24px 20px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center}
+.m-emoji{font-size:2.2rem}
+.m-msg{font-size:.95rem;font-weight:500;color:var(--text-primary);line-height:1.5}
+.m-foot{padding:16px 20px 22px;display:flex;justify-content:center}
+.m-ok{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 40px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.m-ok:hover{filter:brightness(1.12)}
+/* BILL OVERLAY - simple and bulletproof */
+#billOverlay{display:none;position:fixed;inset:0;z-index:9000;background:#0a2e52}
+#billOverlay.show{display:flex;flex-direction:column}
+#billOverlay .bo-head{background:#0a2e52;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.15)}
+#billOverlay .bo-title{color:#fff;font-weight:700;font-size:1rem}
+#billOverlay .bo-date{color:rgba(255,255,255,.6);font-size:.7rem;margin-top:2px}
+#billOverlay .bo-close{background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:8px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#billOverlay .bo-body{flex:1;overflow-y:auto;background:#f0f4f9;-webkit-overflow-scrolling:touch}
+#billOverlay .bo-foot{background:#fff;border-top:2px solid #dae3ef;padding:12px 16px;display:flex;gap:10px;flex-shrink:0}
+#billOverlay .bo-btn{flex:1;height:48px;border:none;border-radius:10px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s}
+#billOverlay .bo-btn:active{transform:scale(.95)}
+#billOverlay .bo-pdf{background:#e53935;color:#fff}
+#billOverlay .bo-jpg{background:#f57c00;color:#fff}
+#billOverlay .bo-wa{background:#22c55e;color:#fff}
+/* BILL CONTENT inside overlay */
+.bill-card{background:#fff;margin:12px;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.bill-shop{background:#0a2e52;color:#fff;padding:14px 16px}
+.bill-shop-name{font-size:1rem;font-weight:700}
+.bill-shop-meta{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}
+.bill-shop-meta span{font-size:.72rem;opacity:.8}
+.bill-shop-meta strong{display:block;font-size:.85rem;opacity:1;margin-top:1px}
+.bill-sec-hdr{background:#1a6bbd;color:#fff;padding:8px 16px;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.bill-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.bill-tbl th{background:#e8f2ff;color:#0a2e52;padding:8px 10px;font-weight:700;text-align:left;border-bottom:1px solid #dae3ef}
+.bill-tbl td{padding:8px 10px;border-bottom:1px solid #f0f4f9;vertical-align:top;color:#12243a}
+.bill-tbl tr:last-child td{border-bottom:none}
+.bill-tbl .r{text-align:right}
+.bill-tbl .c{text-align:center}
+.bill-pname{font-weight:600;line-height:1.3}
+.bill-co{font-size:.65rem;font-weight:700;color:#1a6bbd;background:#e8f2ff;display:inline-block;padding:1px 5px;border-radius:6px;margin-top:2px}
+.bill-pack{font-size:.65rem;color:#5a7a99;margin-top:1px}
+.bill-tfoot td{background:#0a2e52!important;color:#fff!important;font-weight:700!important;font-size:.88rem!important;border:none!important;padding:10px!important}
+.bill-divider{height:10px;background:#f0f4f9}
+.bill-footer{padding:12px 16px;text-align:center;font-size:.68rem;color:#5a7a99;background:#fafcff;border-top:2px dashed #dae3ef}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="header-top">
+    <div class="brand">
+      <span class="brand-icon" id="brandIcon">💊</span>
+      <div class="brand-text">
+        <span class="brand-name" id="brandName">Aaradhya Pharmaceuticals</span>
+        <span class="brand-version">v1.4.0</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="lang-btn" id="langBtn" onclick="openLang()">🌐 EN</button>
+      <button class="theme-btn" id="themeBtn" onclick="openTheme()">🎨 Theme</button>
+    </div>
+  </div>
+  <div class="hrow cols2">
+    <input id="shop" type="text" autocomplete="off">
+    <input id="mobile" type="tel" autocomplete="off" inputmode="numeric">
+  </div>
+  <div class="hrow cols2">
+    <div class="swrap"><span class="sicon">🔍</span><input id="search" oninput="doFilter()" autocomplete="off"></div>
+    <select id="filterCompany" onchange="doFilter()"></select>
+  </div>
+  <div class="hrow cols1"><select id="filterComposition" onchange="doFilter()"></select></div>
+</header>
+
+<div id="list"><div class="loading-state"><div class="spinner"></div><span id="loadingText">Loading products…</span></div></div>
+<div id="sentinel"></div>
+
+<div class="cart-bar">
+  <div class="cart-bar-top">
+    <div class="cart-info">
+      <span class="cart-count" id="cartCount">0 items in cart</span>
+      <span class="cart-total" id="cartTotal">&#8377;0.00</span>
+    </div>
+    <div class="cart-btns">
+      <button class="btn-bill" onclick="openBill()">🧾 Bill</button>
+      <button class="btn-checkout" onclick="sendOrder()">🛒 <span id="checkoutText">Checkout via WhatsApp</span></button>
+    </div>
+  </div>
+  <div class="cart-footer">
+    <span class="cf-brand">&#169; Aaradhya Pharmaceuticals, 2026</span>
+    <span class="cf-sep">|</span><span class="cf-tech">Built with <strong>Aaratech</strong></span>
+    <span class="cf-sep">|</span><span>Powered by <span class="cf-ai">AI</span></span>
+  </div>
+</div>
+
+<!-- BILL OVERLAY -->
+<div id="billOverlay">
+  <div class="bo-head">
+    <div><div class="bo-title">🧾 Order Bill</div><div class="bo-date" id="boDate"></div></div>
+    <button class="bo-close" onclick="closeBill()">✕</button>
+  </div>
+  <div class="bo-body" id="boBody"></div>
+  <div class="bo-foot">
+    <button class="bo-btn bo-pdf" onclick="downloadBill('pdf')">📄 PDF</button>
+    <button class="bo-btn bo-jpg" onclick="downloadBill('jpg')">🖼️ JPG</button>
+    <button class="bo-btn bo-wa"  onclick="sendOrder()">🛒 WhatsApp</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div class="lb-bar"><span class="lb-title" id="lbTitle"></span><button class="lb-btn" onclick="closeLightbox()">✕</button></div>
+  <div id="lightbox-img-wrap"><img id="lightbox-img" src="" alt=""></div>
+  <div class="lb-controls">
+    <button class="lb-btn" onclick="lbZoom(-0.25)">−</button>
+    <span class="lb-zoom-label" id="lbZoomLabel">100%</span>
+    <button class="lb-btn" onclick="lbZoom(+0.25)">+</button>
+    <button class="lb-btn" style="margin-left:auto" onclick="lbReset()">&#8631;</button>
+  </div>
+</div>
+
+<!-- ALERT MODAL -->
+<div id="alertModal">
+  <div class="m-box">
+    <div class="m-hdr"><span class="m-hdr-ico">💊</span><span class="m-hdr-ttl">Aaradhya Pharmaceuticals</span></div>
+    <div class="m-body"><div class="m-emoji" id="mEmo"></div><div class="m-msg" id="mTxt"></div></div>
+    <div class="m-foot"><button class="m-ok" id="modalOkBtn" onclick="closeModal()">OK</button></div>
+  </div>
+</div>
+
+<!-- LANG SHEET -->
+<div class="lang-overlay" id="langOverlay" onclick="closeLang()"></div>
+<div class="lang-sheet" id="langSheet">
+  <div class="lang-handle"></div>
+  <h3 id="langSheetTitle">Choose Language</h3>
+  <div class="lang-grid">
+    <button class="lang-opt active" id="lo-en" onclick="applyLang('en')"><span class="li">🇬🇧</span><span class="ln">English</span><span class="ls">English</span></button>
+    <button class="lang-opt" id="lo-hi" onclick="applyLang('hi')"><span class="li">🇮🇳</span><span class="ln">हिन्दी</span><span class="ls">Hindi</span></button>
+    <button class="lang-opt" id="lo-od" onclick="applyLang('od')"><span class="li">🏛️</span><span class="ln">ଓଡ଼ିଆ</span><span class="ls">Odia</span></button>
+  </div>
+  <button class="lang-close" id="langCloseBtn" onclick="closeLang()">✕ Close</button>
+</div>
+
+<!-- THEME SHEET -->
+<div class="t-overlay" id="tOverlay" onclick="closeTheme()"></div>
+<div class="t-sheet" id="tSheet">
+  <div class="t-handle"></div>
+  <h3 id="themeSheetTitle">Choose a Theme</h3>
+  <div class="t-grid">
+    <button class="t-opt" id="t-pharma"    onclick="applyTheme('pharma')"><span class="ti">💊</span><span id="tn-pharma">Pharma</span></button>
+    <button class="t-opt" id="t-darknight" onclick="applyTheme('darknight')"><span class="ti">🦇</span><span id="tn-dark">Dark</span></button>
+    <button class="t-opt" id="t-jungle"    onclick="applyTheme('jungle')"><span class="ti">🌿</span><span id="tn-jungle">Jungle</span></button>
+    <button class="t-opt" id="t-avengers"  onclick="applyTheme('avengers')"><span class="ti">⚡</span><span id="tn-avengers">Avengers</span></button>
+    <button class="t-opt" id="t-indian"    onclick="applyTheme('indian')"><span class="ti">🇮🇳</span><span id="tn-indian">Indian</span></button>
+  </div>
+  <button class="t-close" id="themeCloseBtn" onclick="closeTheme()">✕ Close</button>
+</div>
+<script>
+/* ══ LOCALIZATION ══ */
+var L={
+en:{voiceLang:'en-IN',brandName:'Aaradhya Pharmaceuticals',loading:'Loading products…',shopPh:'🏪 Shop Name',mobilePh:'📱 Mobile No.',searchPh:'Search name, company, composition…',allCo:'🏭 All Companies',allCx:'🧪 All Compositions',cartZero:'0 items in cart',cartN:function(n){return n+' item'+(n!==1?'s':'')+' in cart';},checkout:'Checkout via WhatsApp',addCart:'+ Add to Cart',noProducts:'No products found',modalOk:'OK',themeTitle:'Choose a Theme',langTitle:'Choose Language',themeClose:'✕ Close',langClose:'✕ Close',themeNames:{pharma:'Pharma',darknight:'Dark',jungle:'Jungle',avengers:'Avengers',indian:'Indian'},langBtnLabel:'🌐 EN',themeBtnLabel:'🎨 Theme',errBoth:'Please enter Shop Name and Mobile Number.',errShop:'Please enter your Shop Name.',errMobile:'Please enter your Mobile Number.',errCart:'Cart is empty. Add some products first!',
+vWelcome:function(n){return 'Welcome to Aaradhya Pharmaceuticals. '+n+' products loaded. Ready to order.';},vAdded:function(n){return n+' added to cart';},vRemoved:function(n){return n+' removed from cart';},vQty:function(n){return 'Quantity '+n;},vFound:function(n){return n+' products found';},vNone:'No products found.',vTheme:function(t){return t+' theme applied';},vChooseTheme:'Choose a theme',vChooseLang:'Choose language',vLang:function(l){return l+' language selected';},vImgOpen:function(n){return 'Viewing image of '+n;},vImgClose:'Image closed',vZoom:function(p){return 'Zoom '+p+' percent';},vZoomReset:'Zoom reset',vOrder:function(c,a,s){return 'Order placed! '+c+' items worth Rupees '+Math.round(a)+' sent to WhatsApp. Thank you '+s+'!';},vFail:'Failed to load products.',vBillReady:'Bill ready. Tap PDF or JPG to download.'},
+hi:{voiceLang:'hi-IN',brandName:'आराध्या फार्मास्यूटिकल्स',loading:'उत्पाद लोड हो रहे हैं…',shopPh:'🏪 दुकान का नाम',mobilePh:'📱 मोबाइल नंबर',searchPh:'नाम, कंपनी खोजें…',allCo:'🏭 सभी कंपनियाँ',allCx:'🧪 सभी संरचनाएँ',cartZero:'कार्ट में 0 आइटम',cartN:function(n){return 'कार्ट में '+n+' आइटम';},checkout:'WhatsApp पर ऑर्डर भेजें',addCart:'+ कार्ट में जोड़ें',noProducts:'कोई उत्पाद नहीं मिला',modalOk:'ठीक है',themeTitle:'थीम चुनें',langTitle:'भाषा चुनें',themeClose:'✕ बंद करें',langClose:'✕ बंद करें',themeNames:{pharma:'फार्मा',darknight:'डार्क',jungle:'जंगल',avengers:'एवेंजर्स',indian:'भारतीय'},langBtnLabel:'🌐 हिन्दी',themeBtnLabel:'🎨 थीम',errBoth:'दुकान का नाम और मोबाइल नंबर दर्ज करें।',errShop:'दुकान का नाम दर्ज करें।',errMobile:'मोबाइल नंबर दर्ज करें।',errCart:'कार्ट खाली है।',
+vWelcome:function(n){return 'आराध्या फार्मास्यूटिकल्स में स्वागत। '+n+' उत्पाद लोड हुए।';},vAdded:function(n){return n+' कार्ट में जोड़ा गया';},vRemoved:function(n){return n+' हटाया गया';},vQty:function(n){return 'मात्रा '+n;},vFound:function(n){return n+' उत्पाद मिले';},vNone:'कोई उत्पाद नहीं मिला।',vTheme:function(t){return t+' थीम लागू';},vChooseTheme:'थीम चुनें',vChooseLang:'भाषा चुनें',vLang:function(l){return l+' भाषा चुनी गई';},vImgOpen:function(n){return n+' की तस्वीर';},vImgClose:'बंद',vZoom:function(p){return 'ज़ूम '+p;},vZoomReset:'रीसेट',vOrder:function(c,a,s){return 'ऑर्डर दिया गया। धन्यवाद '+s+'!';},vFail:'उत्पाद लोड नहीं हुए।',vBillReady:'बिल तैयार है। PDF या JPG डाउनलोड करें।'},
+od:{voiceLang:'or-IN',brandName:'ଆରାଧ୍ୟା ଫାର୍ମାସ୍ୟୁଟିକଲ୍ସ',loading:'ଉତ୍ପାଦ ଲୋଡ଼ ହେଉଛି…',shopPh:'🏪 ଦୋକାନ ନାମ',mobilePh:'📱 ମୋବାଇଲ୍ ନଂ.',searchPh:'ନାମ, କମ୍ପାନୀ ଖୋଜନ୍ତୁ…',allCo:'🏭 ସମସ୍ତ କମ୍ପାନୀ',allCx:'🧪 ସମସ୍ତ ସଂରଚନା',cartZero:'କାର୍ଟରେ 0 ଆଇଟମ୍',cartN:function(n){return 'କାର୍ଟରେ '+n+' ଆଇଟମ୍';},checkout:'WhatsApp ରେ ଅର୍ଡ଼ର',addCart:'+ କାର୍ଟରେ ଯୋଡ଼ନ୍ତୁ',noProducts:'ଉତ୍ପାଦ ମିଳିଲା ନାହିଁ',modalOk:'ଠିକ ଅଛି',themeTitle:'ଥିମ ବାଛନ୍ତୁ',langTitle:'ଭାଷା ବାଛନ୍ତୁ',themeClose:'✕ ବନ୍ଦ',langClose:'✕ ବନ୍ଦ',themeNames:{pharma:'ଫାର୍ମା',darknight:'ଡାର୍କ',jungle:'ଜଙ୍ଗଲ',avengers:'ଏଭେଞ୍ଜର',indian:'ଭାରତୀୟ'},langBtnLabel:'🌐 ଓଡ଼ିଆ',themeBtnLabel:'🎨 ଥିମ',errBoth:'ଦୋକାନ ନାମ ଓ ମୋବାଇଲ ନଂ ଦିଅନ୍ତୁ।',errShop:'ଦୋକାନ ନାମ ଦିଅନ୍ତୁ।',errMobile:'ମୋବାଇଲ ନଂ ଦିଅନ୍ତୁ।',errCart:'କାର୍ଟ ଖାଲି ଅଛି।',
+vWelcome:function(n){return 'ଆରାଧ୍ୟାରେ ସ୍ୱାଗତ। '+n+' ଉତ୍ପାଦ ଲୋଡ ହୋଇଛି।';},vAdded:function(n){return n+' ଯୋଡ଼ା ହୋଇଛି';},vRemoved:function(n){return n+' ହଟାଯାଇଛି';},vQty:function(n){return 'ପରିମାଣ '+n;},vFound:function(n){return n+' ଉତ୍ପାଦ';},vNone:'ମିଳିଲା ନାହିଁ।',vTheme:function(t){return t+' ଥିମ';},vChooseTheme:'ଥିମ ବାଛନ୍ତୁ',vChooseLang:'ଭାଷା ବାଛନ୍ତୁ',vLang:function(l){return l+' ଭାଷା';},vImgOpen:function(n){return n+' ଛବି';},vImgClose:'ବନ୍ଦ',vZoom:function(p){return 'ଜୁମ '+p;},vZoomReset:'ରିସେଟ',vOrder:function(c,a,s){return 'ଅର୍ଡ଼ର ଦିଆ ହୋଇଛି। ଧନ୍ୟବାଦ '+s+'!';},vFail:'ଲୋଡ ହେଲା ନାହିଁ।',vBillReady:'ବିଲ ପ୍ରସ୍ତୁତ।'}
+};
+var curLang=localStorage.getItem('aa_lang')||'en';
+function s(k){return L[curLang][k]||L.en[k]||'';}
+
+/* ══ LANGUAGE ══ */
+function applyLang(lang,silent){
+  curLang=lang;localStorage.setItem('aa_lang',lang);
+  document.documentElement.setAttribute('data-lang',lang);
+  document.documentElement.lang=L[lang].voiceLang;
+  refreshUI();closeLang();
+  ['en','hi','od'].forEach(function(l){var b=document.getElementById('lo-'+l);if(b)b.classList.toggle('active',l===lang);});
+  if(!silent)speak(L[lang].vLang({en:'English',hi:'Hindi',od:'Odia'}[lang]||lang),true);
+}
+function refreshUI(){
+  var S=L[curLang];
+  document.getElementById('brandName').textContent=S.brandName;
+  document.getElementById('langBtn').textContent=S.langBtnLabel;
+  document.getElementById('themeBtn').textContent=S.themeBtnLabel;
+  document.getElementById('shop').placeholder=S.shopPh;
+  document.getElementById('mobile').placeholder=S.mobilePh;
+  document.getElementById('search').placeholder=S.searchPh;
+  document.getElementById('checkoutText').textContent=S.checkout;
+  document.getElementById('modalOkBtn').textContent=S.modalOk;
+  document.getElementById('themeSheetTitle').textContent=S.themeTitle;
+  document.getElementById('themeCloseBtn').textContent=S.themeClose;
+  document.getElementById('langSheetTitle').textContent=S.langTitle;
+  document.getElementById('langCloseBtn').textContent=S.langClose;
+  document.getElementById('tn-pharma').textContent=S.themeNames.pharma;
+  document.getElementById('tn-dark').textContent=S.themeNames.darknight;
+  document.getElementById('tn-jungle').textContent=S.themeNames.jungle;
+  document.getElementById('tn-avengers').textContent=S.themeNames.avengers;
+  document.getElementById('tn-indian').textContent=S.themeNames.indian;
+  var lt=document.getElementById('loadingText');if(lt)lt.textContent=S.loading;
+  var fc=document.getElementById('filterCompany'),fx=document.getElementById('filterComposition');
+  if(fc&&fc.options[0])fc.options[0].textContent=S.allCo;
+  if(fx&&fx.options[0])fx.options[0].textContent=S.allCx;
+  document.querySelectorAll('.btn-add').forEach(function(b){b.textContent=S.addCart;});
+  refreshCart();
+}
+
+/* ══ VOICE ENGINE ══ */
+var GT_LANG={en:'en',hi:'hi'};
+var _audio=null,_speakQueue=[],_speaking=false;
+
+function _normalizeTTS(text,lang){
+  var TOKEN={
+    en:{'MRP':'Maximum Retail Price','Tab':'Tablet','tab':'tablet','Cap':'Capsule','cap':'capsule','Inj':'Injection','Syp':'Syrup','Susp':'Suspension','WhatsApp':'Whatsapp','Rs':'Rupees','IP':'','BP':'','USP':'','NF':''},
+    hi:{'MRP':'अधिकतम खुदरा मूल्य','Tab':'टैबलेट','Cap':'कैप्सूल','Inj':'इंजेक्शन','Syp':'सिरप','WhatsApp':'व्हाट्सएप','IP':'','BP':'','USP':''},
+    od:{'MRP':'ସର୍ବାଧିକ ଖୁଚୁରା ମୂଲ୍ୟ','Tab':'ଟାବଲେଟ','Cap':'କ୍ୟାପସୁଲ','Inj':'ଇଞ୍ଜେକ୍ସନ','Syp':'ସିରପ','WhatsApp':'ହ୍ୱାଟ୍ସଆପ','IP':'','BP':'','USP':''}
+  };
+  var map=TOKEN[lang]||TOKEN.en;
+  // strip emojis
+  text=text.replace(/[\u{1F000}-\u{1FFFF}]/gu,' ').replace(/[©✕⟳▪*_#]/g,' ');
+  // currency
+  var r=lang==='hi'?'रुपये ':lang==='od'?'ଟଙ୍କା ':'Rupees ';
+  text=text.replace(/₹/g,r);
+  // dose patterns
+  var mg=lang==='hi'?'मिलीग्राम':lang==='od'?'ମିଲିଗ୍ରାମ':'milligrams';
+  var ml=lang==='hi'?'मिलीलीटर':lang==='od'?'ମିଲିଲିଟର':'millilitres';
+  text=text.replace(/(\d+)\s*mg\b/gi,'$1 '+mg+' ').replace(/(\d+)\s*ml\b/gi,'$1 '+ml+' ');
+  // token map — split on spaces, replace whole tokens only
+  var out=text.split(/\s+/).map(function(tok){
+    if(!tok)return '';
+    // ALL-CAPS 2+ pure letters → Title Case so TTS reads as word
+    if(/^[A-Z]{2,}$/.test(tok))tok=tok[0]+tok.slice(1).toLowerCase();
+    return Object.prototype.hasOwnProperty.call(map,tok)?(map[tok]||''):tok;
+  });
+  return out.filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
+}
+
+function speak(text,priority){
+  var clean=_normalizeTTS(text,curLang);
+  if(!clean)return;
+  if(priority){_speakQueue=[];_speaking=false;if(_audio){_audio.pause();_audio.src='';_audio=null;}if(window.speechSynthesis)window.speechSynthesis.cancel();}
+  _speakQueue.push(clean);
+  if(!_speaking)_processQueue();
+}
+function _processQueue(){
+  if(!_speakQueue.length){_speaking=false;return;}
+  _speaking=true;
+  var text=_speakQueue.shift();
+  if(curLang==='od'){_speakWS(text,_processQueue);return;}
+  _speakGT(text,function(ok){if(!ok)_speakWS(text,_processQueue);else _processQueue();});
+}
+function _speakGT(text,cb){
+  try{
+    var chunks=[];var words=text.split(' ');var cur='';
+    for(var i=0;i<words.length;i++){var w=words[i];if((cur+' '+w).trim().length>180&&cur){chunks.push(cur.trim());cur=w;}else{cur=(cur+' '+w).trim();}}
+    if(cur)chunks.push(cur);
+    _playChunks(chunks,0,cb);
+  }catch(e){cb(false);}
+}
+function _playChunks(chunks,idx,cb){
+  if(idx>=chunks.length){cb(true);return;}
+  var url='https://translate.googleapis.com/translate_tts?ie=UTF-8&tl='+(GT_LANG[curLang]||'en')+'&q='+encodeURIComponent(chunks[idx])+'&client=tw-ob&ttsspeed=0.9';
+  var a=new Audio();_audio=a;a.volume=1;
+  a.onended=function(){_playChunks(chunks,idx+1,cb);};
+  a.onerror=function(){cb(false);};
+  a.src=url;var p=a.play();if(p&&p.catch)p.catch(function(){cb(false);});
+}
+function _speakWS(text,cb){
+  if(!window.speechSynthesis){if(cb)cb();return;}
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(text);
+  u.lang=L[curLang].voiceLang;u.rate=0.92;u.pitch=1;u.volume=1;
+  var vs=window.speechSynthesis.getVoices(),px=u.lang.split('-')[0];
+  var pref=vs.find(function(v){return v.lang===u.lang;})||vs.find(function(v){return v.lang.toLowerCase().startsWith('or');})||vs.find(function(v){return v.lang.startsWith(px)&&v.name.indexOf('Google')>-1;})||vs.find(function(v){return v.lang.startsWith(px);})||vs.find(function(v){return v.lang.startsWith('en');});
+  if(pref)u.voice=pref;
+  u.onend=function(){if(cb)cb();};u.onerror=function(){if(cb)cb();};
+  window.speechSynthesis.speak(u);
+}
+if(window.speechSynthesis){window.speechSynthesis.getVoices();window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};}
+
+/* ══ LANG SHEET ══ */
+function openLang(){document.getElementById('langSheet').style.display='block';document.getElementById('langOverlay').style.display='block';speak(s('vChooseLang'));}
+function closeLang(){document.getElementById('langSheet').style.display='none';document.getElementById('langOverlay').style.display='none';}
+
+/* ══ LIGHTBOX ══ */
+var lbScale=1,lbMin=0.5,lbMax=4;
+function openLightbox(src,title){var img=document.getElementById('lightbox-img');img.src=src;img.style.transform='scale(1)';lbScale=1;document.getElementById('lbTitle').textContent=title||'';document.getElementById('lbZoomLabel').textContent='100%';document.getElementById('lightbox').classList.add('show');document.body.style.overflow='hidden';speak(L[curLang].vImgOpen(title||'product'));}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show');document.getElementById('lightbox-img').src='';document.body.style.overflow='';speak(s('vImgClose'));}
+function lbZoom(d){lbScale=Math.min(lbMax,Math.max(lbMin,lbScale+d));document.getElementById('lightbox-img').style.transform='scale('+lbScale+')';var p=Math.round(lbScale*100);document.getElementById('lbZoomLabel').textContent=p+'%';speak(L[curLang].vZoom(p));}
+function lbReset(){lbScale=1;document.getElementById('lightbox-img').style.transform='scale(1)';document.getElementById('lbZoomLabel').textContent='100%';speak(s('vZoomReset'));}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this||e.target===document.getElementById('lightbox-img-wrap'))closeLightbox();});
+(function(){var w=document.getElementById('lightbox-img-wrap'),id=0,is=1;w.addEventListener('touchstart',function(e){if(e.touches.length===2){id=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);is=lbScale;}},{passive:true});w.addEventListener('touchmove',function(e){if(e.touches.length===2){var d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);lbScale=Math.min(lbMax,Math.max(lbMin,is*(d/id)));document.getElementById('lightbox-img').style.transform='scale('+lbScale+')';document.getElementById('lbZoomLabel').textContent=Math.round(lbScale*100)+'%';}},{passive:true});})();
+
+/* ══ MODAL ══ */
+var _cb=null;
+function showModal(emoji,msg,cb){document.getElementById('mEmo').textContent=emoji;document.getElementById('mTxt').textContent=msg;_cb=cb||null;document.getElementById('alertModal').classList.add('show');speak(msg,true);}
+function closeModal(){document.getElementById('alertModal').classList.remove('show');if(typeof _cb==='function'){var f=_cb;_cb=null;f();}}
+function highlight(id){var el=document.getElementById(id);el.classList.remove('input-error');void el.offsetWidth;el.classList.add('input-error');el.addEventListener('input',function h(){el.classList.remove('input-error');el.removeEventListener('input',h);});}
+
+/* ══ THEMES ══ */
+var TICONS={pharma:'💊',darknight:'🦇',jungle:'🌿',avengers:'⚡',indian:'🇮🇳'};
+var curTheme=localStorage.getItem('aa_theme')||'pharma';
+function applyTheme(tn){curTheme=tn;localStorage.setItem('aa_theme',tn);document.documentElement.setAttribute('data-theme',tn);document.getElementById('brandIcon').textContent=TICONS[tn];document.querySelectorAll('.t-opt').forEach(function(b){b.classList.remove('active');});var ab=document.getElementById('t-'+tn);if(ab)ab.classList.add('active');closeTheme();speak(L[curLang].vTheme((L[curLang].themeNames||{})[tn]||tn));}
+function openTheme(){document.getElementById('tSheet').style.display='block';document.getElementById('tOverlay').style.display='block';speak(s('vChooseTheme'));}
+function closeTheme(){document.getElementById('tSheet').style.display='none';document.getElementById('tOverlay').style.display='none';}
+applyTheme(curTheme);
+
+/* ══ CSV ══ */
+function parseCSV(text){var rows=[],row=[],col='',q=false,i,ch;for(i=0;i<text.length;i++){ch=text[i];if(ch==='"'){q=!q;}else if(ch===','&&!q){row.push(col);col='';}else if((ch==='\n'||ch==='\r')&&!q){if(col||row.length){row.push(col);rows.push(row);row=[];col='';}}else{col+=ch;}}if(col)row.push(col);if(row.length)rows.push(row);return rows;}
+
+/* ══ STATE ══ */
+var products=[],filtered=[],cart={},visible=12;
+var COL={name:0,pack:1,mrp:3,rate:4,company:5,composition:6};
+var CSV_URL='https://docs.google.com/spreadsheets/d/e/2PACX-1vSkoAFrWFkerY629v3zhsV5q3NggnlHgSgBqZ2CnAK3n0riqW24dZN3iWm_JJz-XPf9Dtgkayaey-Vg/pub?output=csv';
+
+fetch(CSV_URL).then(function(r){return r.text();}).then(function(txt){
+  var rows=parseCSV(txt);if(!rows.length)return;
+  var hdr=rows[0].map(function(h){return h.toLowerCase().trim();});
+  function fC(kw,fb){for(var k=0;k<kw.length;k++)for(var i=0;i<hdr.length;i++)if(hdr[i].indexOf(kw[k])>-1)return i;return fb;}
+  COL.name=fC(['product','name','medicine'],0);COL.pack=fC(['pack','qty','size'],1);
+  COL.mrp=fC(['mrp','retail'],3);COL.rate=fC(['rate','price','ptr'],4);
+  COL.company=fC(['company','manufacturer','brand'],5);COL.composition=fC(['composition','salt'],6);
+  products=rows.slice(1).map(function(r,i){return{id:i,name:(r[COL.name]||'').trim(),pack:(r[COL.pack]||'').trim(),mrp:parseFloat((r[COL.mrp]||'').replace(/[^\d.]/g,''))||0,rate:parseFloat((r[COL.rate]||'').replace(/[^\d.]/g,''))||0,company:(r[COL.company]||'').trim(),composition:(r[COL.composition]||'').trim(),imageUrl:(r[8]||'').trim()};}).filter(function(p){return p.name;});
+  filtered=products.slice();buildDropdowns();render(true);
+  _queueWelcome(products.length);
+}).catch(function(e){
+  console.error(e);
+  document.getElementById('list').innerHTML='<div class="empty-state"><div style="font-size:2.5rem">⚠️</div><div>'+s('noProducts')+'</div></div>';
+  speak(s('vFail'),true);
+});
+
+function buildDropdowns(){
+  var cS={},cos=[],xS={},cxs=[];
+  products.forEach(function(p){if(p.company&&!cS[p.company]){cS[p.company]=1;cos.push(p.company);}if(p.composition&&!xS[p.composition]){xS[p.composition]=1;cxs.push(p.composition);}});
+  cos.sort();cxs.sort();
+  var fc=document.getElementById('filterCompany');fc.innerHTML='<option value="">'+s('allCo')+'</option>';cos.forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;fc.appendChild(o);});
+  var fx=document.getElementById('filterComposition');fx.innerHTML='<option value="">'+s('allCx')+'</option>';cxs.forEach(function(x){var o=document.createElement('option');o.value=x;o.textContent=x;fx.appendChild(o);});
+}
+
+var _ft=null;
+function doFilter(){
+  var sv=(document.getElementById('search').value||'').toLowerCase().trim();
+  var c=document.getElementById('filterCompany').value,cx=document.getElementById('filterComposition').value;
+  filtered=products.filter(function(p){if(c&&p.company!==c)return false;if(cx&&p.composition!==cx)return false;if(sv){var h=(p.name+' '+p.company+' '+p.composition).toLowerCase();if(h.indexOf(sv)===-1)return false;}return true;});
+  visible=12;render(true);
+  clearTimeout(_ft);_ft=setTimeout(function(){if(filtered.length===0)speak(s('vNone'),true);else if(sv||c||cx)speak(L[curLang].vFound(filtered.length));},700);
+}
+
+function toImgUrl(url){if(!url)return'';url=url.trim();if(url.indexOf('lh3.googleusercontent.com')>-1)return url.replace(/=[wsh]\d+[^"]*$/,'')+'=w400';var m1=url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)return'https://drive.google.com/thumbnail?id='+m1[1]+'&sz=w400';var m2=url.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)return'https://drive.google.com/thumbnail?id='+m2[1]+'&sz=w400';return'';}
+function esc(v){return String(v||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function render(reset){
+  var list=document.getElementById('list');
+  if(reset){list.innerHTML='';if(!filtered.length){list.innerHTML='<div class="empty-state"><div style="font-size:2.5rem">🔍</div><div>'+s('noProducts')+'</div></div>';return;}}
+  filtered.slice(0,visible).forEach(function(p){
+    if(document.getElementById('card-'+p.id))return;
+    var d=document.createElement('div');d.className='item';d.id='card-'+p.id;
+    var iw=document.createElement('div');iw.className='item-img-wrap';
+    var cv=toImgUrl(p.imageUrl||'');
+    if(cv){var img=document.createElement('img');img.src=cv;img.alt=p.name;(function(src,name,wrap){img.onerror=function(){wrap.innerHTML='<div class="item-img-blank"><span>📷</span></div>';wrap.style.cursor='default';};wrap.addEventListener('click',function(){if(img.complete&&img.naturalWidth)openLightbox(src,name);});})(cv,p.name,iw);iw.appendChild(img);iw.insertAdjacentHTML('beforeend','<span class="img-tap-hint">🔍</span>');}
+    else{iw.innerHTML='<div class="item-img-blank"><span>📷</span></div>';iw.style.cursor='default';}
+    d.appendChild(iw);
+    var ch=p.composition?'<div class="item-composition">🧪 '+esc(p.composition)+'</div>':'';
+    var rest=document.createElement('div');rest.style.cssText='display:contents';
+    rest.innerHTML='<div class="item-content"><div class="item-name">'+esc(p.name)+'</div><div class="item-company">'+esc(p.company)+'</div><span class="item-pack">📦 '+esc(p.pack)+'</span>'+ch+'<div class="price-row"><span class="rate-price">&#8377;'+p.rate.toFixed(2)+'</span><span class="mrp-price">MRP &#8377;'+p.mrp.toFixed(2)+'</span></div><div class="spacer"></div><div class="controls" id="ctrl-'+p.id+'">'+mkCtrl(p.id,cart[p.id]||0)+'</div></div>';
+    d.appendChild(rest);list.appendChild(d);
+  });
+}
+function mkCtrl(id,qty){if(!qty)return'<button class="btn-add" onclick="upd('+id+',1)">'+s('addCart')+'</button>';return'<div class="qty-control"><button class="btn-qty" onclick="upd('+id+',-1)">−</button><span class="qty-num">'+qty+'</span><button class="btn-qty" onclick="upd('+id+',1)">+</button></div>';}
+function upd(id,d){var prev=cart[id]||0;cart[id]=prev+d;if(cart[id]<0)cart[id]=0;var c=document.getElementById('ctrl-'+id);if(c)c.innerHTML=mkCtrl(id,cart[id]);refreshCart();var name=products[parseInt(id,10)]?products[parseInt(id,10)].name:'item';if(prev===0&&cart[id]===1)speak(L[curLang].vAdded(name));else if(cart[id]===0)speak(L[curLang].vRemoved(name));else speak(L[curLang].vQty(cart[id]));}
+function _calcCart(){
+  var total=0,count=0;
+  for(var id in cart){
+    var qty=cart[id]||0;
+    if(qty>0&&products[parseInt(id,10)]){
+      var rate=products[parseInt(id,10)].rate||0;
+      total=Math.round((total+qty*rate)*100)/100;
+      count+=qty;
+    }
+  }
+  return{total:total,count:count};
+}
+function refreshCart(){
+  var c=_calcCart();
+  document.getElementById('cartCount').textContent=c.count===0?s('cartZero'):L[curLang].cartN(c.count);
+  document.getElementById('cartTotal').textContent='₹'+c.total.toFixed(2);
+}
+new IntersectionObserver(function(e){if(e[0].isIntersecting){visible+=12;render(false);}},{rootMargin:'250px'}).observe(document.getElementById('sentinel'));
+
+/* ══ WHATSAPP ══ */
+function sendOrder(){
+  var shop=(document.getElementById('shop').value||'').trim(),mob=(document.getElementById('mobile').value||'').trim();
+  if(!shop&&!mob){showModal('⚠️',s('errBoth'),function(){highlight('shop');highlight('mobile');document.getElementById('shop').focus();});return;}
+  if(!shop){showModal('🏪',s('errShop'),function(){highlight('shop');document.getElementById('shop').focus();});return;}
+  if(!mob){showModal('📱',s('errMobile'),function(){highlight('mobile');document.getElementById('mobile').focus();});return;}
+  var has=false;for(var x in cart){if(cart[x]>0){has=true;break;}}
+  if(!has){showModal('🛒',s('errCart'));return;}
+  var msg='🧾 *New Order*%0A*Shop:* '+encodeURIComponent(shop)+'%0A*Mobile:* '+encodeURIComponent(mob)+'%0A%0A';
+  var total=0,count=0;
+  for(var id in cart){if(cart[id]>0){var p=products[parseInt(id,10)],amt=Math.round(cart[id]*p.rate*100)/100;total=Math.round((total+amt)*100)/100;count+=cart[id];msg+='▪ '+encodeURIComponent(p.name)+' × '+cart[id]+' = ₹'+amt.toFixed(2)+'%0A';}}
+  msg+='%0A*Total: ₹'+total.toFixed(2)+'*';
+  speak(L[curLang].vOrder(count,total,shop),true);
+  closeBill();
+  window.open('https://wa.me/919533762508?text='+msg);
+}
+
+/* ══ BILL ══ */
+function _cartItems(){
+  var items=[];
+  for(var id in cart){
+    var qty=cart[id]||0;
+    var idx=parseInt(id,10);
+    if(qty>0&&products[idx]){
+      var rate=products[idx].rate||0;
+      var amt=Math.round(qty*rate*100)/100;
+      items.push({
+        name:products[idx].name,
+        company:products[idx].company,
+        pack:products[idx].pack,
+        rate:rate,
+        qty:qty,
+        amount:amt
+      });
+    }
+  }
+  items.sort(function(a,b){return a.name.localeCompare(b.name);});
+  return items;
+}
+
+function openBill(){
+  var shop=(document.getElementById('shop').value||'').trim(),mob=(document.getElementById('mobile').value||'').trim();
+  if(!shop&&!mob){showModal('⚠️',s('errBoth'),function(){highlight('shop');highlight('mobile');document.getElementById('shop').focus();});return;}
+  if(!shop){showModal('🏪',s('errShop'),function(){highlight('shop');document.getElementById('shop').focus();});return;}
+  if(!mob){showModal('📱',s('errMobile'),function(){highlight('mobile');document.getElementById('mobile').focus();});return;}
+  var items=_cartItems();
+  if(!items.length){showModal('🛒',s('errCart'));return;}
+
+  var grandTotal=Math.round(items.reduce(function(acc,i){return acc+i.amount;},0)*100)/100;
+  var coMap={};items.forEach(function(it){if(!coMap[it.company])coMap[it.company]={qty:0,amount:0};coMap[it.company].qty+=it.qty;coMap[it.company].amount=Math.round((coMap[it.company].amount+it.amount)*100)/100;});
+
+  var now=new Date();
+  var ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
+  var ts=now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  document.getElementById('boDate').textContent=ds+' '+ts;
+
+  var iRows=items.map(function(it){return'<tr><td><div class="bill-pname">'+esc(it.name)+'</div><div class="bill-co">'+esc(it.company)+'</div>'+(it.pack?'<div class="bill-pack">'+esc(it.pack)+'</div>':'')+' </td><td class="c">'+it.qty+'</td><td class="r">&#8377;'+it.rate.toFixed(2)+'</td><td class="r"><strong>&#8377;'+it.amount.toFixed(2)+'</strong></td></tr>';}).join('');
+
+  var cRows=Object.keys(coMap).sort().map(function(co){var d=coMap[co];return'<tr><td><strong>'+esc(co)+'</strong></td><td class="c">'+d.qty+'</td><td class="r"><strong>&#8377;'+d.amount.toFixed(2)+'</strong></td></tr>';}).join('');
+
+  document.getElementById('boBody').innerHTML=
+    '<div class="bill-card">'+
+      '<div class="bill-shop">'+
+        '<div class="bill-shop-name">💊 Aaradhya Pharmaceuticals</div>'+
+        '<div class="bill-shop-meta">'+
+          '<span><strong>'+esc(shop)+'</strong>Shop</span>'+
+          '<span><strong>'+esc(mob)+'</strong>Mobile</span>'+
+          '<span><strong>'+ds+'</strong>Date</span>'+
+          '<span><strong>'+ts+'</strong>Time</span>'+
+        '</div>'+
+      '</div>'+
+      '<div class="bill-sec-hdr">📋 Ordered Items</div>'+
+      '<table class="bill-tbl"><thead><tr><th>Product</th><th class="c">Qty</th><th class="r">Rate</th><th class="r">Amount</th></tr></thead>'+
+      '<tbody>'+iRows+'</tbody>'+
+      '<tfoot><tr class="bill-tfoot"><td colspan="3">GRAND TOTAL</td><td class="r">&#8377;'+grandTotal.toFixed(2)+'</td></tr></tfoot></table>'+
+      '<div class="bill-divider"></div>'+
+      '<div class="bill-sec-hdr">🏭 Company-wise Summary</div>'+
+      '<table class="bill-tbl"><thead><tr><th>Company</th><th class="c">Units</th><th class="r">Total</th></tr></thead>'+
+      '<tbody>'+cRows+'</tbody>'+
+      '<tfoot><tr class="bill-tfoot"><td colspan="2">TOTAL</td><td class="r">&#8377;'+grandTotal.toFixed(2)+'</td></tr></tfoot></table>'+
+      '<div class="bill-footer"><em style="color:#e53935;font-weight:600;font-size:0.75rem;">* All prices are exclusive of taxes.</em><br><br><strong>Aaradhya Pharmaceuticals</strong> &bull; Aaratech &bull; Powered by AI</div>'+
+    '</div>';
+
+  document.getElementById('billOverlay').classList.add('show');
+  document.body.style.overflow='hidden';
+  speak(s('vBillReady'),true);
+}
+
+function closeBill(){document.getElementById('billOverlay').classList.remove('show');document.body.style.overflow='';}
+
+function downloadBill(fmt){
+  // Disable buttons while generating
+  var foot=document.querySelector('#billOverlay .bo-foot');
+  var orig=foot.innerHTML;
+  foot.innerHTML='<div style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;color:#666;font-size:.9rem"><div class="spinner" style="width:22px;height:22px;border-width:2px;border-color:#dae3ef;border-top-color:#1a6bbd"></div>Generating '+fmt.toUpperCase()+'…</div>';
+
+  function restore(){foot.innerHTML=orig;}
+
+  function loadScript(url,cb){
+    var s=document.createElement('script');s.src=url;
+    s.onload=cb;s.onerror=function(){restore();showModal('⚠️','Could not load library. Check internet.');};
+    document.head.appendChild(s);
+  }
+
+  var target=document.getElementById('boBody');
+  var shop=(document.getElementById('shop').value||'order').trim().replace(/\s+/g,'_');
+  var fname='Aaradhya_Bill_'+shop+'_'+new Date().toISOString().slice(0,10);
+
+  function doCapture(){
+    // Scroll target to top
+    target.scrollTop=0;
+    // Temporarily expand to full height for capture
+    var prevH=target.style.height,prevO=target.style.overflow;
+    target.style.height=target.scrollHeight+'px';
+    target.style.overflow='visible';
+
+    html2canvas(target,{scale:2,useCORS:true,backgroundColor:'#f0f4f9',logging:false}).then(function(canvas){
+      target.style.height=prevH;target.style.overflow=prevO;
+      if(fmt==='jpg'){
+        canvas.toBlob(function(blob){
+          var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=fname+'.jpg';a.click();
+          restore();speak('Bill downloaded as JPG');
+        },'image/jpeg',0.95);
+      } else {
+        if(!window.jspdf){
+          loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',function(){doPDF(canvas,fname);restore();speak('Bill downloaded as PDF');});
+        } else {doPDF(canvas,fname);restore();speak('Bill downloaded as PDF');}
+      }
+    }).catch(function(e){console.error(e);target.style.height=prevH;target.style.overflow=prevO;restore();showModal('⚠️','Could not generate bill. Try again.');});
+  }
+
+  function doPDF(canvas,fname){
+    var jsPDF=window.jspdf.jsPDF;
+    var iw=canvas.width,ih=canvas.height;
+    var pw=210,ph=Math.round((ih/iw)*pw);
+    var pdf=new jsPDF({orientation:ph>pw?'portrait':'landscape',unit:'mm',format:[pw,ph]});
+    pdf.addImage(canvas.toDataURL('image/jpeg',0.95),'JPEG',0,0,pw,ph);
+    pdf.save(fname+'.pdf');
+  }
+
+  if(!window.html2canvas){
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',doCapture);
+  } else {doCapture();}
+}
+
+/* ══ WELCOME GATE ══ */
+var _welcomeMsg=null,_welcomeFired=false;
+function _queueWelcome(n){
+  _welcomeMsg=L[curLang].vWelcome(n);
+  if(!_welcomeFired){
+    var fn=function(){if(_welcomeFired)return;_welcomeFired=true;document.removeEventListener('click',fn,true);document.removeEventListener('touchend',fn,true);if(_welcomeMsg)speak(_welcomeMsg,true);};
+    document.addEventListener('click',fn,true);document.addEventListener('touchend',fn,true);
+  }
+}
+
+/* ══ INIT ══ */
+applyLang(curLang,true);
+refreshCart();
+</script>
+</body>
+</html>
