@@ -525,7 +525,7 @@ function _calcCart(){
 function refreshCart(){
   var c=_calcCart();
   document.getElementById('cartCount').textContent=c.count===0?s('cartZero'):L[curLang].cartN(c.count);
-  document.getElementById('cartTotal').textContent='&#8377;'+c.total.toFixed(2);
+  document.getElementById('cartTotal').textContent='₹'+c.total.toFixed(2);
 }
 new IntersectionObserver(function(e){if(e[0].isIntersecting){visible+=12;render(false);}},{rootMargin:'250px'}).observe(document.getElementById('sentinel'));
 
