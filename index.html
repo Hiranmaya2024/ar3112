@@ -509,8 +509,24 @@ function render(reset){
   });
 }
 function mkCtrl(id,qty){if(!qty)return'<button class="btn-add" onclick="upd('+id+',1)">'+s('addCart')+'</button>';return'<div class="qty-control"><button class="btn-qty" onclick="upd('+id+',-1)">−</button><span class="qty-num">'+qty+'</span><button class="btn-qty" onclick="upd('+id+',1)">+</button></div>';}
-function upd(id,d){var prev=cart[id]||0;cart[id]=prev+d;if(cart[id]<0)cart[id]=0;var c=document.getElementById('ctrl-'+id);if(c)c.innerHTML=mkCtrl(id,cart[id]);refreshCart();var name=products[id]?products[id].name:'item';if(prev===0&&cart[id]===1)speak(L[curLang].vAdded(name));else if(cart[id]===0)speak(L[curLang].vRemoved(name));else speak(L[curLang].vQty(cart[id]));}
-function refreshCart(){var total=0,count=0;for(var id in cart){if(cart[id]>0){total+=cart[id]*products[id].rate;count+=cart[id];}}document.getElementById('cartCount').textContent=count===0?s('cartZero'):L[curLang].cartN(count);document.getElementById('cartTotal').textContent='&#8377;'+total.toFixed(2);}
+function upd(id,d){var prev=cart[id]||0;cart[id]=prev+d;if(cart[id]<0)cart[id]=0;var c=document.getElementById('ctrl-'+id);if(c)c.innerHTML=mkCtrl(id,cart[id]);refreshCart();var name=products[parseInt(id,10)]?products[parseInt(id,10)].name:'item';if(prev===0&&cart[id]===1)speak(L[curLang].vAdded(name));else if(cart[id]===0)speak(L[curLang].vRemoved(name));else speak(L[curLang].vQty(cart[id]));}
+function _calcCart(){
+  var total=0,count=0;
+  for(var id in cart){
+    var qty=cart[id]||0;
+    if(qty>0&&products[parseInt(id,10)]){
+      var rate=products[parseInt(id,10)].rate||0;
+      total=Math.round((total+qty*rate)*100)/100;
+      count+=qty;
+    }
+  }
+  return{total:total,count:count};
+}
+function refreshCart(){
+  var c=_calcCart();
+  document.getElementById('cartCount').textContent=c.count===0?s('cartZero'):L[curLang].cartN(c.count);
+  document.getElementById('cartTotal').textContent='&#8377;'+c.total.toFixed(2);
+}
 new IntersectionObserver(function(e){if(e[0].isIntersecting){visible+=12;render(false);}},{rootMargin:'250px'}).observe(document.getElementById('sentinel'));
 
 /* ══ WHATSAPP ══ */
@@ -523,7 +539,7 @@ function sendOrder(){
   if(!has){showModal('🛒',s('errCart'));return;}
   var msg='🧾 *New Order*%0A*Shop:* '+encodeURIComponent(shop)+'%0A*Mobile:* '+encodeURIComponent(mob)+'%0A%0A';
   var total=0,count=0;
-  for(var id in cart){if(cart[id]>0){var p=products[id],amt=cart[id]*p.rate;total+=amt;count+=cart[id];msg+='▪ '+encodeURIComponent(p.name)+' × '+cart[id]+' = ₹'+amt.toFixed(2)+'%0A';}}
+  for(var id in cart){if(cart[id]>0){var p=products[parseInt(id,10)],amt=Math.round(cart[id]*p.rate*100)/100;total=Math.round((total+amt)*100)/100;count+=cart[id];msg+='▪ '+encodeURIComponent(p.name)+' × '+cart[id]+' = ₹'+amt.toFixed(2)+'%0A';}}
   msg+='%0A*Total: ₹'+total.toFixed(2)+'*';
   speak(L[curLang].vOrder(count,total,shop),true);
   closeBill();
@@ -533,7 +549,22 @@ function sendOrder(){
 /* ══ BILL ══ */
 function _cartItems(){
   var items=[];
-  for(var id in cart){if(cart[id]>0&&products[id])items.push({name:products[id].name,company:products[id].company,pack:products[id].pack,rate:products[id].rate,qty:cart[id],amount:cart[id]*products[id].rate});}
+  for(var id in cart){
+    var qty=cart[id]||0;
+    var idx=parseInt(id,10);
+    if(qty>0&&products[idx]){
+      var rate=products[idx].rate||0;
+      var amt=Math.round(qty*rate*100)/100;
+      items.push({
+        name:products[idx].name,
+        company:products[idx].company,
+        pack:products[idx].pack,
+        rate:rate,
+        qty:qty,
+        amount:amt
+      });
+    }
+  }
   items.sort(function(a,b){return a.name.localeCompare(b.name);});
   return items;
 }
@@ -546,8 +577,8 @@ function openBill(){
   var items=_cartItems();
   if(!items.length){showModal('🛒',s('errCart'));return;}
 
-  var grandTotal=items.reduce(function(s,i){return s+i.amount;},0);
-  var coMap={};items.forEach(function(it){if(!coMap[it.company])coMap[it.company]={qty:0,amount:0};coMap[it.company].qty+=it.qty;coMap[it.company].amount+=it.amount;});
+  var grandTotal=Math.round(items.reduce(function(acc,i){return acc+i.amount;},0)*100)/100;
+  var coMap={};items.forEach(function(it){if(!coMap[it.company])coMap[it.company]={qty:0,amount:0};coMap[it.company].qty+=it.qty;coMap[it.company].amount=Math.round((coMap[it.company].amount+it.amount)*100)/100;});
 
   var now=new Date();
   var ds=now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'});
@@ -578,7 +609,7 @@ function openBill(){
       '<table class="bill-tbl"><thead><tr><th>Company</th><th class="c">Units</th><th class="r">Total</th></tr></thead>'+
       '<tbody>'+cRows+'</tbody>'+
       '<tfoot><tr class="bill-tfoot"><td colspan="2">TOTAL</td><td class="r">&#8377;'+grandTotal.toFixed(2)+'</td></tr></tfoot></table>'+
-      '<div class="bill-footer"><strong>Aaradhya Pharmaceuticals</strong> &bull; Aaratech &bull; Powered by AI</div>'+
+      '<div class="bill-footer"><em style="color:#e53935;font-weight:600;font-size:0.75rem;">* All prices are exclusive of taxes.</em><br><br><strong>Aaradhya Pharmaceuticals</strong> &bull; Aaratech &bull; Powered by AI</div>'+
     '</div>';
 
   document.getElementById('billOverlay').classList.add('show');
