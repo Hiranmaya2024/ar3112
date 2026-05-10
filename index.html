@@ -170,6 +170,146 @@ body{font-family:var(--font);background:var(--body-bg);color:var(--text-primary)
 .m-ok{background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);padding:11px 40px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:var(--tr)}
 .m-ok:hover{filter:brightness(1.12)}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:10px}
+
+/* DOWNLOAD BUTTONS */
+.btn-download {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--tr);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.btn-download:hover { background: rgba(255,255,255,0.22); }
+.btn-download:active { transform: scale(0.95); }
+.cart-bar-actions { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; justify-content: flex-end; flex: 1; }
+
+/* BILL MODAL */
+#billModal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 9000; align-items: center; justify-content: center;
+  padding: 16px; backdrop-filter: blur(4px);
+}
+#billModal.show { display: flex; }
+.bill-box {
+  background: #fff; border-radius: 16px;
+  width: 100%; max-width: 480px;
+  max-height: 90vh; overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.4);
+}
+.bill-header {
+  background: #0a2e52; color: #fff;
+  padding: 14px 18px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.bill-header-left { display: flex; flex-direction: column; gap: 2px; }
+.bill-header h2 { font-size: 1rem; font-weight: 700; margin: 0; }
+.bill-header .bill-sub { font-size: 0.72rem; opacity: 0.7; }
+.bill-close-btn {
+  background: rgba(255,255,255,0.15); border: none; color: #fff;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-size: 1rem; cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.bill-close-btn:hover { background: rgba(255,255,255,0.28); }
+.bill-scroll { overflow-y: auto; flex: 1; }
+/* THE PRINTABLE BILL */
+#billContent {
+  padding: 0;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  color: #12243a;
+  background: #fff;
+}
+.bill-shop-info {
+  background: #f0f4f9;
+  padding: 12px 18px;
+  border-bottom: 2px dashed #dae3ef;
+}
+.bill-shop-info .shop-name { font-size: 1.05rem; font-weight: 700; color: #0a2e52; }
+.bill-shop-info .shop-meta { font-size: 0.78rem; color: #5a7a99; margin-top: 3px; }
+.bill-section-title {
+  background: #0a2e52; color: #fff;
+  padding: 7px 18px;
+  font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+.bill-table { width: 100%; border-collapse: collapse; }
+.bill-table th {
+  background: #e8f2ff; color: #0a2e52;
+  padding: 7px 10px; font-size: 0.72rem;
+  font-weight: 700; text-align: left;
+  border-bottom: 1px solid #dae3ef;
+}
+.bill-table th:last-child, .bill-table td:last-child { text-align: right; }
+.bill-table th:nth-child(2), .bill-table td:nth-child(2) { text-align: center; }
+.bill-table td {
+  padding: 7px 10px; font-size: 0.78rem;
+  border-bottom: 1px solid #f0f4f9;
+  color: #12243a; vertical-align: middle;
+}
+.bill-table tr:last-child td { border-bottom: none; }
+.bill-table tr:nth-child(even) td { background: #fafcff; }
+.bill-company-badge {
+  display: inline-block;
+  font-size: 0.65rem; font-weight: 700;
+  color: #1a6bbd; background: #e8f2ff;
+  padding: 1px 6px; border-radius: 10px;
+  margin-top: 2px;
+}
+.bill-total-row {
+  background: #0a2e52 !important;
+}
+.bill-total-row td {
+  color: #fff !important; font-weight: 700 !important;
+  font-size: 0.88rem !important; padding: 10px 10px !important;
+  border: none !important; background: transparent !important;
+}
+.bill-company-section { margin-top: 0; }
+.bill-divider { height: 10px; background: #f0f4f9; }
+.bill-footer-stamp {
+  padding: 12px 18px; text-align: center;
+  font-size: 0.68rem; color: #5a7a99;
+  border-top: 2px dashed #dae3ef;
+  background: #fafcff;
+}
+.bill-footer-stamp strong { color: #0a2e52; }
+
+/* BILL BOTTOM ACTIONS */
+.bill-actions {
+  display: flex; gap: 10px; padding: 14px 18px;
+  border-top: 1px solid #dae3ef;
+  background: #f0f4f9; flex-shrink: 0;
+}
+.bill-act-btn {
+  flex: 1; padding: 11px 8px;
+  border: none; border-radius: var(--radius-sm);
+  font-family: inherit; font-size: 0.85rem; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 7px; transition: 0.15s;
+}
+.bill-act-pdf  { background: #e53935; color: #fff; }
+.bill-act-jpg  { background: #f57c00; color: #fff; }
+.bill-act-wa   { background: #22c55e; color: #fff; }
+.bill-act-btn:hover { filter: brightness(1.1); }
+.bill-act-btn:active { transform: scale(0.96); }
+.bill-generating {
+  display: flex; align-items: center; justify-content: center;
+  gap: 10px; padding: 18px; color: #5a7a99; font-size: 0.85rem;
+}
 </style>
 </head>
 <body>
@@ -215,7 +355,10 @@ body{font-family:var(--font);background:var(--body-bg);color:var(--text-primary)
       <span class="cart-count" id="cartCount">0 items in cart</span>
       <span class="cart-total" id="cartTotal">₹0.00</span>
     </div>
-    <button class="btn-checkout" onclick="sendOrder()">🛒 <span id="checkoutText">Checkout via WhatsApp</span></button>
+    <div class="cart-bar-actions">
+      <button class="btn-download" onclick="openBill()" title="Preview &amp; Download Bill">🧾 Bill</button>
+      <button class="btn-checkout" onclick="sendOrder()">🛒 <span id="checkoutText">Checkout via WhatsApp</span></button>
+    </div>
   </div>
   <div class="cart-footer">
     <span class="cf-brand">©️ Aaradhya Pharmaceuticals, 2026</span>
@@ -223,6 +366,29 @@ body{font-family:var(--font);background:var(--body-bg);color:var(--text-primary)
     <span class="cf-tech">Built with <strong>Aaratech</strong></span>
     <span class="cf-sep">|</span>
     <span>Powered by <span class="cf-ai">AI</span></span>
+  </div>
+</div>
+
+<!-- BILL MODAL -->
+<div id="billModal">
+  <div class="bill-box">
+    <div class="bill-header">
+      <div class="bill-header-left">
+        <h2>💊 Order Bill</h2>
+        <span class="bill-sub" id="billDateTime"></span>
+      </div>
+      <button class="bill-close-btn" onclick="closeBill()">✕</button>
+    </div>
+    <div class="bill-scroll">
+      <div id="billContent">
+        <!-- generated dynamically -->
+      </div>
+    </div>
+    <div class="bill-actions">
+      <button class="bill-act-btn bill-act-pdf" onclick="downloadBill('pdf')">📄 PDF</button>
+      <button class="bill-act-btn bill-act-jpg" onclick="downloadBill('jpg')">🖼️ JPG</button>
+      <button class="bill-act-btn bill-act-wa"  onclick="sendOrder()">🛒 WhatsApp</button>
+    </div>
   </div>
 </div>
 
@@ -465,26 +631,155 @@ function refreshUI() {
   refreshCart();
 }
 
-/* ══════════════════════════════════════════════
-   VOICE ENGINE
-   ══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════════════
+   VOICE ENGINE — Google Translate TTS (natural) + Web Speech fallback
+   ══════════════════════════════════════════════════════════════ */
+
+// ══════════════════════════════════════════════════════════════
+// VOICE ENGINE
+// - English + Hindi  → Google Translate TTS (natural, human voice)
+// - Odia             → Web Speech API (Google TTS has no Odia support)
+// - Fallback         → Web Speech API for EN/HI if GT is blocked
+// ══════════════════════════════════════════════════════════════
+
+var GT_LANG = { en:'en', hi:'hi' };   // Odia intentionally excluded — GT doesn't support it
+
+var _audio    = null;
+var _speakQueue = [];
+var _speaking   = false;
+
+// ── Pre-TTS text fixup: make ALL-CAPS tokens readable as words ──
+// Google TTS reads "DOLO" as D-O-L-O. Converting to "Dolo" makes it say the word.
+// We ONLY touch tokens that are 100% uppercase letters (no digits, no mixed case).
+// "Sinarest", "VapoRub", "D-COLD" are left completely alone.
+function _fixCapsForTTS(text) {
+  return text.split(' ').map(function(token) {
+    // Pure alpha ALL-CAPS token of 2+ chars → Title Case
+    if (/^[A-Z]{2,}$/.test(token)) {
+      return token.charAt(0) + token.slice(1).toLowerCase();
+    }
+    return token;
+  }).join(' ');
+}
+
 function speak(text, priority) {
-  if (!window.speechSynthesis) return;
-  if (priority) window.speechSynthesis.cancel();
+  var clean = _normalizeTTS(text, curLang);
+  if (!clean) return;
+
+  if (priority) {
+    _speakQueue = [];
+    _speaking   = false;
+    if (_audio) { _audio.pause(); _audio.src = ''; _audio = null; }
+    if (window.speechSynthesis) window.speechSynthesis.cancel();
+  }
+
+  _speakQueue.push(clean);
+  if (!_speaking) _processQueue();
+}
+
+function _processQueue() {
+  if (!_speakQueue.length) { _speaking = false; return; }
+  _speaking = true;
+  var text = _speakQueue.shift();
+
+  // Odia → always use Web Speech (GT has no Odia voice)
+  if (curLang === 'od') {
+    _speakWebSpeech(text, _processQueue);
+    return;
+  }
+
+  // English & Hindi → try Google Translate TTS first, fallback to Web Speech
+  var fixed = _fixCapsForTTS(text);
+  _speakGT(fixed, function(ok) {
+    if (!ok) _speakWebSpeech(text, _processQueue);
+    else _processQueue();
+  });
+}
+
+// ── Google Translate TTS (English + Hindi only) ──
+function _speakGT(text, cb) {
+  try {
+    var chunks = _chunkText(text, 180);
+    _playChunks(chunks, 0, cb);
+  } catch(e) { cb(false); }
+}
+
+function _chunkText(text, max) {
+  var chunks = [], words = text.split(' '), cur = '';
+  for (var i = 0; i < words.length; i++) {
+    var w = words[i];
+    if ((cur + ' ' + w).trim().length > max && cur) {
+      chunks.push(cur.trim()); cur = w;
+    } else {
+      cur = (cur + ' ' + w).trim();
+    }
+  }
+  if (cur) chunks.push(cur);
+  return chunks;
+}
+
+function _playChunks(chunks, idx, cb) {
+  if (idx >= chunks.length) { cb(true); return; }
+  var chunk = chunks[idx];
+  var lang  = GT_LANG[curLang] || 'en';
+  // tw-ob client is the most reliable public GT TTS endpoint
+  var url = 'https://translate.googleapis.com/translate_tts'
+          + '?ie=UTF-8&tl=' + encodeURIComponent(lang)
+          + '&q='  + encodeURIComponent(chunk)
+          + '&client=tw-ob&ttsspeed=0.85';
+
+  var audio = new Audio();
+  _audio = audio;
+  audio.crossOrigin = 'anonymous';
+  audio.volume = 1.0;
+  audio.onended = function() { _playChunks(chunks, idx + 1, cb); };
+  audio.onerror = function() { cb(false); };
+  audio.src = url;
+  var p = audio.play();
+  if (p && typeof p.then === 'function') {
+    p.catch(function() { cb(false); });
+  }
+}
+
+// ── Web Speech API (Odia always; EN/HI fallback) ──
+// Voice priority: exact lang → same language family Google voice → any Google → any English
+function _speakWebSpeech(text, cb) {
+  if (!window.speechSynthesis) { if (cb) cb(); return; }
+  window.speechSynthesis.cancel();
+
+  var langCode = L[curLang].voiceLang;  // e.g. 'or-IN', 'hi-IN', 'en-IN'
   var u = new SpeechSynthesisUtterance(text);
-  u.lang   = L[curLang].voiceLang;
-  u.rate   = 1.0;
-  u.pitch  = 1.05;
-  u.volume = 1;
-  var voices = window.speechSynthesis.getVoices();
-  var preferred = voices.find(function(v){ return v.lang === u.lang; })
-    || voices.find(function(v){ return v.lang.startsWith(u.lang.split('-')[0]); })
-    || voices.find(function(v){ return v.lang.startsWith('en'); });
+  u.lang   = langCode;
+  u.rate   = curLang === 'od' ? 0.88 : 0.92;
+  u.pitch  = 1.0;
+  u.volume = 1.0;
+
+  var voices  = window.speechSynthesis.getVoices();
+  var prefix  = langCode.split('-')[0];  // 'or', 'hi', 'en'
+
+  // Odia: browsers use 'or' or 'ory' — try both
+  var preferred =
+    voices.find(function(v){ return v.lang === langCode; }) ||
+    voices.find(function(v){ return v.lang.toLowerCase().startsWith('or'); }) ||
+    voices.find(function(v){ return v.lang.toLowerCase().startsWith('ory'); }) ||
+    voices.find(function(v){ return v.lang.startsWith(prefix) && v.name.indexOf('Google') > -1; }) ||
+    voices.find(function(v){ return v.lang.startsWith(prefix); }) ||
+    voices.find(function(v){ return v.name.indexOf('Google') > -1 && v.lang.startsWith('en'); }) ||
+    voices.find(function(v){ return v.lang.startsWith('en'); });
+
   if (preferred) u.voice = preferred;
+  u.onend  = function(){ if (cb) cb(); };
+  u.onerror= function(){ if (cb) cb(); };
   window.speechSynthesis.speak(u);
 }
-if (window.speechSynthesis) { window.speechSynthesis.getVoices(); window.speechSynthesis.onvoiceschanged=function(){}; }
 
+// Preload voices
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = function(){
+    window.speechSynthesis.getVoices(); // force reload on Chrome
+  };
+}
 /* ── LANGUAGE SHEET ── */
 function openLang() { document.getElementById('langSheet').style.display='block'; document.getElementById('langOverlay').style.display='block'; speak(s('vChooseLang')); }
 function closeLang(){ document.getElementById('langSheet').style.display='none';  document.getElementById('langOverlay').style.display='none';  }
@@ -600,7 +895,7 @@ fetch(CSV_URL)
     filtered=products.slice();
     buildDropdowns();
     render(true);
-    speak(L[curLang].vWelcome(products.length),true);
+    _queueWelcome(products.length);
   })
   .catch(function(e){
     console.error(e);
@@ -740,6 +1035,277 @@ function sendOrder(){
   msg+='%0A*Total: ₹'+total.toFixed(2)+'*';
   speak(L[curLang].vOrder(count,total,shop),true);
   window.open('https://wa.me/919533762508?text='+msg);
+}
+
+/* ── WELCOME ON EVERY PAGE LOAD ── */
+// Browsers block audio until first user interaction (tap/click/key).
+// We store the welcome message and fire it on the very first interaction.
+var _welcomeMsg = null;
+var _welcomeFired = false;
+
+function _queueWelcome(productCount) {
+  _welcomeMsg = L[curLang].vWelcome(productCount);
+  if (!_welcomeFired) {
+    // Listen for first interaction — any touch, click, or keydown
+    var _fireWelcome = function() {
+      if (_welcomeFired) return;
+      _welcomeFired = true;
+      document.removeEventListener('click',   _fireWelcome, true);
+      document.removeEventListener('touchend',_fireWelcome, true);
+      document.removeEventListener('keydown', _fireWelcome, true);
+      if (_welcomeMsg) speak(_welcomeMsg, true);
+    };
+    document.addEventListener('click',    _fireWelcome, true);
+    document.addEventListener('touchend', _fireWelcome, true);
+    document.addEventListener('keydown',  _fireWelcome, true);
+  }
+}
+
+/* ══════════════════════════════════════
+   BILL GENERATOR — PDF & JPG Download
+   ══════════════════════════════════════ */
+
+function _buildBillHTML() {
+  var shop = (document.getElementById('shop').value || '').trim() || '—';
+  var mob  = (document.getElementById('mobile').value || '').trim() || '—';
+  var now  = new Date();
+  var dateStr = now.toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+  var timeStr = now.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+
+  // Build ordered items list
+  var items = [];
+  for (var id in cart) {
+    if (cart[id] > 0 && products[id]) {
+      items.push({
+        name:    products[id].name,
+        company: products[id].company,
+        pack:    products[id].pack,
+        rate:    products[id].rate,
+        qty:     cart[id],
+        amount:  cart[id] * products[id].rate
+      });
+    }
+  }
+
+  if (!items.length) return null;
+
+  // Sort items alphabetically by name
+  items.sort(function(a,b){ return a.name.localeCompare(b.name); });
+
+  var grandTotal = items.reduce(function(s,i){ return s + i.amount; }, 0);
+
+  // Build company-wise summary
+  var coMap = {};
+  items.forEach(function(i){
+    if (!coMap[i.company]) coMap[i.company] = { items:0, amount:0 };
+    coMap[i.company].items  += i.qty;
+    coMap[i.company].amount += i.amount;
+  });
+  var companies = Object.keys(coMap).sort();
+
+  // ── Itemized table rows ──
+  var itemRows = items.map(function(it, idx){
+    return '<tr>' +
+      '<td style="max-width:160px">' +
+        '<div style="font-weight:600;font-size:0.8rem;line-height:1.3">' + esc(it.name) + '</div>' +
+        '<div class="bill-company-badge">' + esc(it.company) + '</div>' +
+        (it.pack ? '<div style="font-size:0.65rem;color:#5a7a99;margin-top:2px">📦 ' + esc(it.pack) + '</div>' : '') +
+      '</td>' +
+      '<td style="text-align:center;font-weight:700">' + it.qty + '</td>' +
+      '<td style="text-align:right">₹' + it.rate.toFixed(2) + '</td>' +
+      '<td style="text-align:right;font-weight:700;color:#0a2e52">₹' + it.amount.toFixed(2) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  // ── Company-wise rows ──
+  var coRows = companies.map(function(co){
+    var d = coMap[co];
+    return '<tr>' +
+      '<td style="font-weight:600">' + esc(co) + '</td>' +
+      '<td style="text-align:center">' + d.items + '</td>' +
+      '<td style="text-align:right;font-weight:700;color:#0a2e52">₹' + d.amount.toFixed(2) + '</td>' +
+    '</tr>';
+  }).join('');
+
+  return '<div style="font-family:Arial,sans-serif;font-size:13px;color:#12243a;background:#fff">' +
+
+    // Shop info header
+    '<div style="background:#f0f4f9;padding:12px 18px;border-bottom:2px dashed #dae3ef">' +
+      '<div style="font-size:1.1rem;font-weight:700;color:#0a2e52">💊 Aaradhya Pharmaceuticals</div>' +
+      '<div style="font-size:0.78rem;color:#5a7a99;margin-top:4px">Order Receipt</div>' +
+      '<div style="margin-top:8px;display:flex;gap:20px;flex-wrap:wrap">' +
+        '<div><span style="color:#5a7a99;font-size:0.72rem">SHOP</span><br><strong>' + esc(shop) + '</strong></div>' +
+        '<div><span style="color:#5a7a99;font-size:0.72rem">MOBILE</span><br><strong>' + esc(mob) + '</strong></div>' +
+        '<div><span style="color:#5a7a99;font-size:0.72rem">DATE &amp; TIME</span><br><strong>' + dateStr + ', ' + timeStr + '</strong></div>' +
+      '</div>' +
+    '</div>' +
+
+    // Section 1: All items
+    '<div style="background:#0a2e52;color:#fff;padding:7px 18px;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">📋 Ordered Items</div>' +
+    '<table style="width:100%;border-collapse:collapse">' +
+      '<thead>' +
+        '<tr style="background:#e8f2ff">' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:left;border-bottom:1px solid #dae3ef;color:#0a2e52">Product</th>' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:center;border-bottom:1px solid #dae3ef;color:#0a2e52">Qty</th>' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:right;border-bottom:1px solid #dae3ef;color:#0a2e52">Rate</th>' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:right;border-bottom:1px solid #dae3ef;color:#0a2e52">Amount</th>' +
+        '</tr>' +
+      '</thead>' +
+      '<tbody>' + itemRows + '</tbody>' +
+      '<tfoot>' +
+        '<tr style="background:#0a2e52">' +
+          '<td colspan="3" style="padding:10px;color:#fff;font-weight:700;font-size:0.9rem;border:none">GRAND TOTAL</td>' +
+          '<td style="padding:10px;color:#fff;font-weight:700;font-size:0.9rem;text-align:right;border:none">₹' + grandTotal.toFixed(2) + '</td>' +
+        '</tr>' +
+      '</tfoot>' +
+    '</table>' +
+
+    // Divider
+    '<div style="height:12px;background:#f0f4f9"></div>' +
+
+    // Section 2: Company-wise summary
+    '<div style="background:#0a2e52;color:#fff;padding:7px 18px;font-size:0.75rem;font-weight:700;letter-spacing:0.05em;text-transform:uppercase">🏭 Company-wise Summary</div>' +
+    '<table style="width:100%;border-collapse:collapse">' +
+      '<thead>' +
+        '<tr style="background:#e8f2ff">' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:left;border-bottom:1px solid #dae3ef;color:#0a2e52">Company</th>' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:center;border-bottom:1px solid #dae3ef;color:#0a2e52">Units</th>' +
+          '<th style="padding:7px 10px;font-size:0.72rem;font-weight:700;text-align:right;border-bottom:1px solid #dae3ef;color:#0a2e52">Total</th>' +
+        '</tr>' +
+      '</thead>' +
+      '<tbody>' + coRows + '</tbody>' +
+      '<tfoot>' +
+        '<tr style="background:#0a2e52">' +
+          '<td colspan="2" style="padding:10px;color:#fff;font-weight:700;font-size:0.9rem;border:none">TOTAL</td>' +
+          '<td style="padding:10px;color:#fff;font-weight:700;font-size:0.9rem;text-align:right;border:none">₹' + grandTotal.toFixed(2) + '</td>' +
+        '</tr>' +
+      '</tfoot>' +
+    '</table>' +
+
+    // Footer stamp
+    '<div style="padding:12px 18px;text-align:center;font-size:0.68rem;color:#5a7a99;border-top:2px dashed #dae3ef;background:#fafcff">' +
+      '<strong style="color:#0a2e52">Aaradhya Pharmaceuticals</strong> &bull; Built with Aaratech &bull; Powered by AI<br>' +
+      'Thank you for your order! &hearts;' +
+    '</div>' +
+
+  '</div>';
+}
+
+function openBill() {
+  var shop = (document.getElementById('shop').value || '').trim();
+  var mob  = (document.getElementById('mobile').value || '').trim();
+  if (!shop && !mob) { showModal('⚠️', s('errBoth'), function(){ highlight('shop'); highlight('mobile'); document.getElementById('shop').focus(); }); return; }
+  if (!shop)         { showModal('🏪', s('errShop'),  function(){ highlight('shop');   document.getElementById('shop').focus(); });   return; }
+  if (!mob)          { showModal('📱', s('errMobile'),function(){ highlight('mobile'); document.getElementById('mobile').focus(); }); return; }
+
+  var has = false; for (var x in cart){ if(cart[x]>0){has=true;break;} }
+  if (!has) { showModal('🛒', s('errCart')); return; }
+
+  var html = _buildBillHTML();
+  if (!html) { showModal('🛒', s('errCart')); return; }
+
+  document.getElementById('billContent').innerHTML = html;
+  var now = new Date();
+  document.getElementById('billDateTime').textContent =
+    now.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}) + ' ' +
+    now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  document.getElementById('billModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  speak('Order bill ready. You can download as PDF or JPG.', true);
+}
+
+function closeBill() {
+  document.getElementById('billModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function downloadBill(format) {
+  var actions = document.querySelector('.bill-actions');
+  var origHTML = actions.innerHTML;
+  actions.innerHTML = '<div class="bill-generating"><div class="spinner" style="width:24px;height:24px;border-width:2px"></div> Generating ' + format.toUpperCase() + '…</div>';
+
+  // Dynamically load html2canvas
+  function withHtml2Canvas(cb) {
+    if (window.html2canvas) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = cb;
+    s.onerror = function(){ actions.innerHTML = origHTML; showModal('⚠️','Could not load renderer. Check your internet connection.'); };
+    document.head.appendChild(s);
+  }
+
+  function withJsPDF(cb) {
+    if (window.jspdf) { cb(); return; }
+    var s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    s.onload = cb;
+    s.onerror = function(){ actions.innerHTML = origHTML; showModal('⚠️','Could not load PDF library. Check your internet connection.'); };
+    document.head.appendChild(s);
+  }
+
+  // Capture the bill scroll area (the rendered content inside)
+  var target = document.getElementById('billContent');
+  // Temporarily make the scroll container show full height for capture
+  var scrollEl = target.closest('.bill-scroll') || target.parentElement;
+  var origOverflow = scrollEl.style.overflow;
+  var origMaxH     = scrollEl.style.maxHeight;
+  scrollEl.style.overflow  = 'visible';
+  scrollEl.style.maxHeight = 'none';
+
+  var shop = (document.getElementById('shop').value || 'order').trim().replace(/\s+/g,'_');
+  var ts   = new Date().toISOString().slice(0,10);
+  var filename = 'Aaradhya_Order_' + shop + '_' + ts;
+
+  withHtml2Canvas(function() {
+    html2canvas(target, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      width: target.offsetWidth,
+      windowWidth: target.scrollWidth
+    }).then(function(canvas) {
+
+      if (format === 'jpg') {
+        // ── JPG download ──
+        var link = document.createElement('a');
+        link.download = filename + '.jpg';
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+        scrollEl.style.overflow  = origOverflow;
+        scrollEl.style.maxHeight = origMaxH;
+        actions.innerHTML = origHTML;
+        speak('Bill downloaded as JPG');
+
+      } else {
+        // ── PDF download ──
+        withJsPDF(function() {
+          var imgData = canvas.toDataURL('image/jpeg', 0.95);
+          var jsPDF   = window.jspdf.jsPDF;
+          var imgW    = canvas.width;
+          var imgH    = canvas.height;
+          // A4: 210 x 297 mm — fit width
+          var pdfW    = 210;
+          var pdfH    = Math.round((imgH / imgW) * pdfW);
+          var pdf     = new jsPDF({ orientation: pdfH > pdfW ? 'portrait' : 'landscape', unit:'mm', format:[pdfW, pdfH] });
+          pdf.addImage(imgData, 'JPEG', 0, 0, pdfW, pdfH);
+          pdf.save(filename + '.pdf');
+          scrollEl.style.overflow  = origOverflow;
+          scrollEl.style.maxHeight = origMaxH;
+          actions.innerHTML = origHTML;
+          speak('Bill downloaded as PDF');
+        });
+      }
+
+    }).catch(function(e) {
+      console.error(e);
+      scrollEl.style.overflow  = origOverflow;
+      scrollEl.style.maxHeight = origMaxH;
+      actions.innerHTML = origHTML;
+      showModal('⚠️', 'Could not generate bill image. Please try again.');
+    });
+  });
 }
 
 /* ── INIT ── */
